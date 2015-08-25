@@ -60,27 +60,4 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-   /* public static class DetailFragment extends Fragment {
-
-
-        public DetailFragment() {
-        }
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            TextView tv;
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-            Intent intent=getActivity().getIntent();
-            String str=intent.getStringExtra("prueba");
-            tv= (TextView) rootView.findViewById(R.id.tvTitle);
-            tv.setText(str);
-            return rootView;
-        }
-    }*/
 }

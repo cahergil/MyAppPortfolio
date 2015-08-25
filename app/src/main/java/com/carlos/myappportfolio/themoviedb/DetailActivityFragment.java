@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.model.MovieDetail;
-import com.carlos.myappportfolio.utils.Message;
+import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.TimeMeasure;
 import com.squareup.picasso.Picasso;
 
@@ -27,13 +27,13 @@ import retrofit.RetrofitError;
  * A placeholder fragment containing a simple view.
  */
 public class DetailActivityFragment extends Fragment {
-    private static final String POSTER_BASE_URL="http://image.tmdb.org/t/p/w185/";
-    private static final String API_KEY="";
+
     private String mMovieId;
     private TimeMeasure mTm;
     private MovieDetail mMovieDetail;
     TextView mTvTitle,mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
     ImageView mIvPoster;
+    private boolean mUserRotate=false;
     public DetailActivityFragment() {
     }
 
@@ -51,11 +51,6 @@ public class DetailActivityFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_detail, container, false);
         Bundle bundle=this.getArguments();
         mMovieId=(String)bundle.get("movieId");
-
-        if(savedInstanceState!=null){
-            mMovieDetail=savedInstanceState.getParcelable("movieDetails");
-
-        }
         mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
         mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
         mTvReleaseDate= (TextView) view.findViewById(R.id.tvReleaseDate);
@@ -63,13 +58,24 @@ public class DetailActivityFragment extends Fragment {
         mTvSynopsis= (TextView) view.findViewById(R.id.tvSynopsis);
         mIvPoster= (ImageView) view.findViewById(R.id.ivPoster);
 
+        if(savedInstanceState!=null){
+            mUserRotate=true;
+            mMovieDetail=savedInstanceState.getParcelable("movieDetails");
+            displayDataOnScreen();
+        }
+
+
         return view;
     }
 
+
     @Override
-    public void onStart() {
-        super.onStart();
-        getMoviesDetail();
+   public void onResume() {
+        super.onResume();
+        if(mUserRotate!=true) {
+            getMoviesDetail();
+        }
+        mUserRotate=false;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class DetailActivityFragment extends Fragment {
     public void getMoviesDetail(){
 
         ApiClient.MyApi myApi=ApiClient.getMyApiClient();
-        myApi.getMovieDetails(mMovieId, API_KEY, callbackResponse());
+        myApi.getMovieDetails(mMovieId, AppConstants.API_KEY, callbackResponse());
     }
     private Callback<MovieDetail> callbackResponse(){
 
@@ -92,13 +98,13 @@ public class DetailActivityFragment extends Fragment {
             public void success(MovieDetail movieDetail, retrofit.client.Response response) {
                 mMovieDetail=movieDetail;
                 displayDataOnScreen();
-                Message.displayToast(getActivity(), "success");
+
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.v("VILLANUEVA","errro:"+error.getMessage().toString());
-                Message.displayToast(getActivity(), "failure" + error.getMessage().toString());
+
             }
         };
 
@@ -108,7 +114,7 @@ public class DetailActivityFragment extends Fragment {
     private void displayDataOnScreen() {
         mTvTitle.setText(mMovieDetail.getTitle());
         getActivity().setTitle("Details "+ mMovieDetail.getTitle());
-        String url=POSTER_BASE_URL+mMovieDetail.getPoster_path();
+        String url=AppConstants.POSTER_BASE_URL+mMovieDetail.getPoster_path();
         Picasso.with(getActivity()).load(url).into(mIvPoster);
         mTvRunTime.setText(String.valueOf(mMovieDetail.getRuntime())+"m");
         SimpleDateFormat parser=new SimpleDateFormat("yyyy-MM-dd");

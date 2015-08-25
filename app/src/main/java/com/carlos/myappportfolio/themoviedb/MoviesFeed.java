@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +15,7 @@ import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.model.Response;
+import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
 
@@ -33,9 +33,9 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     private GridView mGridView;
     private MovieAdapter mMovieAdapter;
     private ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
-    private static final String API_KEY="";
     private TimeMeasure mTm;
     private boolean mFromDetailsActivity =false;
+    private boolean mUserRotation=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,26 +56,35 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         mGridView.setNumColumns(columns);
 
         if(savedInstanceState!=null){
+            mUserRotation=true;
+
             mListMovies=savedInstanceState.getParcelableArrayList("mListMovies");
+            mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
+            mGridView.setAdapter(mMovieAdapter);
+
+          //  mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
+         //   mGridView.setAdapter(mMovieAdapter);
         }
         mTm.log("END_ONCREATE");
     }
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("mListMovies", mListMovies);
-
-        super.onSaveInstanceState(outState, outPersistentState);
     }
+
 
      @Override
     protected void onResume() {
         super.onResume();
-        if (mFromDetailsActivity !=true) {
+        if (mFromDetailsActivity !=true && mUserRotation!=true) {
             executeCallToMoviesApi();
         }
-        mFromDetailsActivity =false;
+         mFromDetailsActivity =false;
+         mUserRotation=false;
+
     }
 
     @Override
@@ -116,9 +125,6 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      //  Message.displayToast(this, "pulsado sobre " + mListMovies.get(position).getTitle() + ","
-      //          + mListMovies.get(position).getId());
-
 
         Intent intent=new Intent(this,DetailActivity.class);
         intent.putExtra("movieId", mListMovies.get(position).getId());
@@ -145,13 +151,13 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     public void getMoviesByPopularity(){
 
         ApiClient.MyApi myApi=ApiClient.getMyApiClient();
-        myApi.getMoviesByPopularityDesc(API_KEY, callbackResponse());
+        myApi.getMoviesByPopularityDesc(AppConstants.API_KEY, callbackResponse());
 
 
     }
     public void getMoviesByRate(){
         ApiClient.MyApi myApi=ApiClient.getMyApiClient();
-        myApi.getMoviesByAverageRate(API_KEY, callbackResponse());
+        myApi.getMoviesByAverageRate(AppConstants.API_KEY, callbackResponse());
 
 
     }

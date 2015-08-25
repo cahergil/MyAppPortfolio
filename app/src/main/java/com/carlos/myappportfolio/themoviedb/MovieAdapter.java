@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.model.Response;
+import com.carlos.myappportfolio.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * Created by Carlos on 19/08/2015.
  */
 public class MovieAdapter extends BaseAdapter {
-    private static final String POSTER_BASE_URL="http://image.tmdb.org/t/p/w185/";
+
     private List<Response.Movie> movieList;
     private Context context;
     public MovieAdapter(Context context,List<Response.Movie> movieList){
@@ -58,7 +59,7 @@ public class MovieAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
-         //   imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(270), dpToPx(270)));
+
             Display display=((WindowManager)context.getSystemService(context.WINDOW_SERVICE)).getDefaultDisplay();
             int orientation=display.getRotation();
             switch(orientation) {
@@ -69,7 +70,7 @@ public class MovieAdapter extends BaseAdapter {
                     case Surface.ROTATION_270:
                     imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(300), dpToPx(300)));
                     break;
-                //default:imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(270), dpToPx(270)));
+
             }
 
 
@@ -82,9 +83,8 @@ public class MovieAdapter extends BaseAdapter {
 
         String url;
         Response.Movie temp=movieList.get(position);
-        url=POSTER_BASE_URL+temp.getPoster_path();
+        url= AppConstants.POSTER_BASE_URL+temp.getPoster_path();
         Picasso.with(context).load(url).into(imageView);
-       // imageView.setImageResource(mThumbIds[position]);*/
         return imageView;
     }
     public int dpToPx(int dp) {
@@ -92,25 +92,5 @@ public class MovieAdapter extends BaseAdapter {
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
-    /*@Override
-     public View getView(int position, View convertView, ViewGroup parent) {
-
-        View row=convertView;
-        ViewHolder viewHolder=null;
-        if(row==null) {
-           LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-           row = layoutInflater.inflate(R.layout.themoviedb_single_row, parent, false);
-           viewHolder=new ViewHolder(row);
-           row.setTag(viewHolder);
-        } else {
-           viewHolder= (ViewHolder) row.getTag();
-
-        }
-       String url;
-        Response.Movie temp=movieList.get(position);
-        url=POSTER_BASE_URL+temp.getPoster_path();
-        Picasso.with(context).load(url).into(viewHolder.myPoster);
-        return row;
-    }*/
 
 }
