@@ -28,7 +28,7 @@ import retrofit.RetrofitError;
  */
 public class DetailActivityFragment extends Fragment {
     private static final String POSTER_BASE_URL="http://image.tmdb.org/t/p/w185/";
-    private static final String API_KEY="fd743d7e561dafce3e95178a536b5450";
+    private static final String API_KEY="";
     private String mMovieId;
     private TimeMeasure mTm;
     private MovieDetail mMovieDetail;

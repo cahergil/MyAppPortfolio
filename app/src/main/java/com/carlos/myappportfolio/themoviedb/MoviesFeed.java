@@ -33,7 +33,7 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     private GridView mGridView;
     private MovieAdapter mMovieAdapter;
     private ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
-    private static final String API_KEY="fd743d7e561dafce3e95178a536b5450";
+    private static final String API_KEY="";
     private TimeMeasure mTm;
     private boolean mFromDetailsActivity =false;
     @Override
