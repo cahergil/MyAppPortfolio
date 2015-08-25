@@ -6,4 +6,13 @@
     <dimen name="buttons_margin">10dp</dimen>
     <dimen name="btnspotify_margintop">35dp</dimen>
     <dimen name="title_margintop">45dp</dimen>
+    <!-- Detail screen. -->
+    <dimen name="detail_title_height">100dp</dimen>
+    <dimen name="detail_title_paddinTop">15dp</dimen>
+    <dimen name="detail_title_paddinLeft">30dp</dimen>
+    <dimen name="detail_title_textSize">25dp</dimen>
+
+    <dimen name="detail_layout_height">20dp</dimen>
+    <dimen name="detail_image_width">185dp</dimen>
+    <dimen name="detail_image_height">278dp</dimen>
 </resources>

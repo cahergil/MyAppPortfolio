@@ -1,0 +1,86 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.carlos.myappportfolio.themoviedb.DetailActivityFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_title_height"
+        android:id="@+id/tvTitle"
+        android:background="@color/teal"
+        android:paddingLeft="@dimen/detail_title_paddinLeft"
+        android:paddingTop="@dimen/detail_title_paddinTop"
+        android:text="prueba"
+        android:textColor="@color/white"
+        android:textSize="@dimen/detail_title_textSize"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/detail_image_width"
+            android:layout_height="@dimen/detail_image_height"
+            android:id="@+id/ivPoster"
+            android:src="@mipmap/ic_launcher"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:text="@string/detail_runtime"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:id="@+id/tvRunTime"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:text="@string/detail_release_date_text"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:id="@+id/tvReleaseDate"
+                android:gravity="center"
+               />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:text="@string/detail_rate_text"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_layout_height"
+                android:id="@+id/tvRate"
+
+                android:gravity="center"
+               />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSynopsis"
+        />
+</LinearLayout>
+</ScrollView>
