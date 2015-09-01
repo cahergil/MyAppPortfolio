@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.myappportfolio.themoviedb.adapters;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -12,7 +12,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.model.Response;
+import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +65,7 @@ public class MovieAdapter extends BaseAdapter {
             switch(orientation) {
                 case Surface.ROTATION_0:
                     imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(270), dpToPx(270)));
+
                     break;
                 case Surface.ROTATION_90:
                     case Surface.ROTATION_270:

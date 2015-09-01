@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/review"
+        android:id="@+id/ivReview"/>
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAutor"
+        android:text="Autor"
+        android:layout_marginTop="12dp"
+        android:layout_alignBaseline="@+id/ivReview"
+        android:layout_toRightOf="@+id/ivReview"
+        android:layout_toEndOf="@+id/ivReview"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvContent"
+        android:layout_toRightOf="@+id/tvAutor"
+        android:layout_marginTop="12dp"
+
+        />
+
+
+</RelativeLayout>

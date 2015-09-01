@@ -26,7 +26,8 @@
         <activity
             android:name=".themoviedb.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".themoviedb.MoviesFeed" >
+            android:parentActivityName=".themoviedb.MoviesFeed"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlos.myappportfolio.themoviedb.MoviesFeed" />
@@ -34,13 +35,19 @@
         <activity
             android:name=".themoviedb.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".themoviedb.MoviesFeed">
+            android:parentActivityName=".themoviedb.MoviesFeed" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".themoviedb.MoviesFeed">
-
+                android:value=".themoviedb.MoviesFeed" >
             </meta-data>
-
+        </activity>
+        <activity
+            android:name=".themoviedb.ReviewsDetail"
+            android:label="@string/title_activity_reviews_detail"
+            android:parentActivityName=".themoviedb.DetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.carlos.myappportfolio.themoviedb.DetailActivity" />
         </activity>
     </application>
 

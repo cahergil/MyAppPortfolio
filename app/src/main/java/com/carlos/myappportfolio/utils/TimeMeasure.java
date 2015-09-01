@@ -16,7 +16,7 @@ public class TimeMeasure {
         this.format = new DecimalFormat("0.0");
         this.start = System.currentTimeMillis();
         this.tag = tag;
-        log("start");
+        log("play");
     }
 
     public void log(String message) {

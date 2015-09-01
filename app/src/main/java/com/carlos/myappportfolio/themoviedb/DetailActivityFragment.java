@@ -1,22 +1,33 @@
 package com.carlos.myappportfolio.themoviedb;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.model.MovieDetail;
+import com.carlos.myappportfolio.themoviedb.adapters.ReviewAdapter;
+import com.carlos.myappportfolio.themoviedb.adapters.TrailerAdapter;
+import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
+import com.carlos.myappportfolio.themoviedb.models.Reviews;
+import com.carlos.myappportfolio.themoviedb.models.Trailers;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.TimeMeasure;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -26,20 +37,29 @@ import retrofit.RetrofitError;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment {
+public class DetailActivityFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private String mMovieId;
     private TimeMeasure mTm;
     private MovieDetail mMovieDetail;
-    TextView mTvTitle,mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
-    ImageView mIvPoster;
+    private TextView mTvTitle,mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
+    private ImageView mIvPoster;
     private boolean mUserRotate=false;
+    private ArrayList<Trailers.YoutubeEntity> mlistTrailers = new ArrayList<Trailers.YoutubeEntity>();
+    private ArrayList<Reviews.ResultsEntity> mlistReviews   = new ArrayList<Reviews.ResultsEntity>();
+
+    private ListView mListViewTrailers;
+    private ListView mListViewReviews;
+    private Button mBtnFavorite;
+
+
     public DetailActivityFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         TimeMeasure mTm=new TimeMeasure("VILLANUEVA");
     }
@@ -57,10 +77,50 @@ public class DetailActivityFragment extends Fragment {
         mTvRate= (TextView) view.findViewById(R.id.tvRate);
         mTvSynopsis= (TextView) view.findViewById(R.id.tvSynopsis);
         mIvPoster= (ImageView) view.findViewById(R.id.ivPoster);
+        mBtnFavorite= (Button) view.findViewById(R.id.btnFavorite);
+        //mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds();
+        //Trailers
+        mListViewTrailers=(ListView) view.findViewById(R.id.listViewTrailers);
+        TrailerAdapter trailerAdapter =new TrailerAdapter(getActivity(),mlistTrailers);
+        mListViewTrailers.setAdapter(trailerAdapter);
+        mListViewTrailers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
+                String buildUrl;
+                buildUrl=AppConstants.YOURTUBE_BASE_URL+mlistTrailers.get(position).getSource();
+                intent =new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
+                startActivity(intent);
+            }
+        });
+
+        //Reviews
+        mListViewReviews=(ListView) view.findViewById(R.id.listViewReviews);
+        ReviewAdapter reviewAdapter =new ReviewAdapter(getActivity(),mlistReviews);
+        mListViewReviews.setAdapter(reviewAdapter);
+//        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent=new Intent(getActivity(),ReviewsDetail.class);
+//                intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
+//                startActivity(intent);
+//            }
+//        });
+
+
 
         if(savedInstanceState!=null){
             mUserRotate=true;
             mMovieDetail=savedInstanceState.getParcelable("movieDetails");
+            ArrayList<Reviews.ResultsEntity> listReviewsTemp;
+            listReviewsTemp=savedInstanceState.getParcelableArrayList("reviewsList");
+            mlistReviews.addAll(listReviewsTemp);
+            setListViewHeightBasedOnChildren(mListViewReviews);
+            ArrayList<Trailers.YoutubeEntity> listTrailersTemp;
+            listTrailersTemp=savedInstanceState.getParcelableArrayList("trailerList");
+            mlistTrailers.addAll(listTrailersTemp);
+            setListViewHeightBasedOnChildren(mListViewTrailers);
+
             displayDataOnScreen();
         }
 
@@ -81,7 +141,9 @@ public class DetailActivityFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelable("movieDetails",mMovieDetail);
+        outState.putParcelable("movieDetails", mMovieDetail);
+        outState.putParcelableArrayList("reviewsList", mlistReviews);
+        outState.putParcelableArrayList("trailerList",mlistTrailers);
         super.onSaveInstanceState(outState);
     }
 
@@ -90,6 +152,25 @@ public class DetailActivityFragment extends Fragment {
         ApiClient.MyApi myApi=ApiClient.getMyApiClient();
         myApi.getMovieDetails(mMovieId, AppConstants.API_KEY, callbackResponse());
     }
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+             return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
     private Callback<MovieDetail> callbackResponse(){
 
         return new Callback<MovieDetail>() {
@@ -97,6 +178,18 @@ public class DetailActivityFragment extends Fragment {
             @Override
             public void success(MovieDetail movieDetail, retrofit.client.Response response) {
                 mMovieDetail=movieDetail;
+                Trailers trailers=mMovieDetail.getTrailers();
+                Reviews reviews=mMovieDetail.getReviews();
+
+                mlistTrailers.clear();
+                mlistTrailers.addAll(trailers.getYoutubeTrailers());
+                setListViewHeightBasedOnChildren(mListViewTrailers);
+
+                mlistReviews.clear();
+                mlistReviews.addAll(reviews.getListReviews());
+
+                setListViewHeightBasedOnChildren(mListViewReviews);
+
                 displayDataOnScreen();
 
             }
@@ -132,4 +225,8 @@ public class DetailActivityFragment extends Fragment {
         mTvSynopsis.setText(mMovieDetail.getOverview());
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
 }

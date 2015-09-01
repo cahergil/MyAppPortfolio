@@ -1,7 +1,7 @@
 package com.carlos.myappportfolio.themoviedb;
 
-import com.carlos.myappportfolio.themoviedb.model.MovieDetail;
-import com.carlos.myappportfolio.themoviedb.model.Response;
+import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
+import com.carlos.myappportfolio.themoviedb.models.Response;
 
 import retrofit.RestAdapter;
 import retrofit.http.GET;
@@ -22,7 +22,7 @@ public class ApiClient {
         @GET("/3/discover/movie?certification_country=US&certification=R&sort_by=vote_average.desc")
         void getMoviesByAverageRate(@Query("api_key") String apikey, retrofit.Callback<Response> cb);
 
-        @GET("/3/movie/{id}?append_to_response=credits,releases,images")
+        @GET("/3/movie/{id}?append_to_response=trailers,reviews")
         void getMovieDetails(@Path("id")String id,@Query("api_key") String apikey,retrofit.Callback<MovieDetail> cb);
     }
 

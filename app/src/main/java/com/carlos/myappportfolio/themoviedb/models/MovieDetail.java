@@ -1,7 +1,9 @@
-package com.carlos.myappportfolio.themoviedb.model;
+package com.carlos.myappportfolio.themoviedb.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Carlos on 23/08/2015.
@@ -18,6 +20,11 @@ public class MovieDetail implements Parcelable {
     private double vote_average;
     private int vote_count;
     private String overview;
+    @SerializedName("trailers")
+    private Trailers trailers;
+    @SerializedName("reviews")
+    private Reviews reviews;
+
 
     private MovieDetail(Parcel in){
 
@@ -141,5 +148,18 @@ public class MovieDetail implements Parcelable {
     public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
+
+    public Trailers getTrailers() {
+        return trailers;
+    }
+    public Reviews getReviews() {
+        return reviews;
+    }
+
+
+
+
+
+
 
 }

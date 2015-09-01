@@ -37,4 +37,5 @@
     <!--  main activity title -->
     <string name="mainactivity_title_popularity">Movies by popularity</string>
     <string name="mainactivity_title_rate">Movies by rate</string>
+    <string name="title_activity_reviews_detail">ReviewsDetail</string>
 </resources>

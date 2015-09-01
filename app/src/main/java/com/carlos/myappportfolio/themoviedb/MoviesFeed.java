@@ -2,7 +2,6 @@ package com.carlos.myappportfolio.themoviedb;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.model.Response;
+import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
+import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
@@ -47,13 +47,13 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         mGridView.setOnItemClickListener(MoviesFeed.this);
 
         //for tablets specially
-        float scalefactor = getResources().getDisplayMetrics().density * APPROX_FIXED_IMAGE_WIDTH;
-        Point size=new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        int number=size.x;
-        int columns = (int) ((float) number / (float) scalefactor);
-
-        mGridView.setNumColumns(columns);
+//        float scalefactor = getResources().getDisplayMetrics().density * APPROX_FIXED_IMAGE_WIDTH;
+//        Point size=new Point();
+//        getWindowManager().getDefaultDisplay().getSize(size);
+//        int number=size.x;
+//        int columns = (int) ((float) number / (float) scalefactor);
+//
+//        mGridView.setNumColumns(columns);
 
         if(savedInstanceState!=null){
             mUserRotation=true;
