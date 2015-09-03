@@ -20,12 +20,15 @@
     <string-array name="pref_order_entries">
         <item>most popular</item>
         <item>highest rated</item>
+        <item>favorites</item>
     </string-array>
     <string name="pref_popularity">popularity</string>
     <string name="pref_rate">rate</string>
+    <string name="pref_favorites">favorites</string>
     <string-array name="pref_order_values">
         <item>@string/pref_popularity</item>
         <item>@string/pref_rate</item>
+        <item>@string/pref_favorites</item>
     </string-array>
     <!--  strings fragment_detail-->
     <string name="detail_runtime">Run time:</string>
@@ -37,5 +40,6 @@
     <!--  main activity title -->
     <string name="mainactivity_title_popularity">Movies by popularity</string>
     <string name="mainactivity_title_rate">Movies by rate</string>
+    <string name="mainactivity_title_favorites">Favorites movies</string>
     <string name="title_activity_reviews_detail">ReviewsDetail</string>
 </resources>

@@ -25,7 +25,9 @@ public class MovieDetail implements Parcelable {
     @SerializedName("reviews")
     private Reviews reviews;
 
+    public MovieDetail(){
 
+    }
     private MovieDetail(Parcel in){
 
         this.id=in.readInt();
@@ -59,7 +61,8 @@ public class MovieDetail implements Parcelable {
         dest.writeInt(vote_count);
         dest.writeString(overview);
     }
-    public final Parcelable.Creator<MovieDetail> CREATOR=new Creator<MovieDetail>() {
+    //make transietn to avoid error instance creator with gson
+    public final transient Parcelable.Creator<MovieDetail> CREATOR=new Creator<MovieDetail>() {
         @Override
         public MovieDetail createFromParcel(Parcel source) {
             return new MovieDetail(source);
@@ -157,9 +160,19 @@ public class MovieDetail implements Parcelable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        MovieDetail that = (MovieDetail) o;
 
+        return id == that.id;
 
+    }
 
-
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

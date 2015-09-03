@@ -47,8 +47,8 @@ public class ReviewAdapter extends BaseAdapter {
         }
         textAuthor= (TextView) row.findViewById(R.id.tvAutor);
         textAuthor.setText("Author:"+mListReviews.get(position).getAuthor());
-        textContent=(TextView) row.findViewById(R.id.tvContent);
-        textContent.setText(mListReviews.get(position).getContent());
+        //textContent=(TextView) row.findViewById(R.id.tvContent);
+        //textContent.setText(mListReviews.get(position).getContent());
         return row;
     }
 }

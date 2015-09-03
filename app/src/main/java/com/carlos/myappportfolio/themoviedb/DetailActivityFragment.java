@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.ReviewAdapter;
@@ -29,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit.Callback;
@@ -37,7 +39,7 @@ import retrofit.RetrofitError;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class DetailActivityFragment extends Fragment {
 
     private String mMovieId;
     private TimeMeasure mTm;
@@ -47,11 +49,11 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
     private boolean mUserRotate=false;
     private ArrayList<Trailers.YoutubeEntity> mlistTrailers = new ArrayList<Trailers.YoutubeEntity>();
     private ArrayList<Reviews.ResultsEntity> mlistReviews   = new ArrayList<Reviews.ResultsEntity>();
-
+    SharedPreferenceManager mSharedPreferenceManager;
     private ListView mListViewTrailers;
     private ListView mListViewReviews;
     private Button mBtnFavorite;
-
+    private boolean mFavoritesMode=false;
 
     public DetailActivityFragment() {
     }
@@ -70,7 +72,9 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
 
         View view= inflater.inflate(R.layout.fragment_detail, container, false);
         Bundle bundle=this.getArguments();
+        mSharedPreferenceManager=new SharedPreferenceManager(getActivity());
         mMovieId=(String)bundle.get("movieId");
+        mFavoritesMode=bundle.getBoolean("favoritesMode");
         mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
         mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
         mTvReleaseDate= (TextView) view.findViewById(R.id.tvReleaseDate);
@@ -78,6 +82,30 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
         mTvSynopsis= (TextView) view.findViewById(R.id.tvSynopsis);
         mIvPoster= (ImageView) view.findViewById(R.id.ivPoster);
         mBtnFavorite= (Button) view.findViewById(R.id.btnFavorite);
+        mBtnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btnTemp=(Button)v;
+
+                List<MovieDetail> tempList;
+                if (btnTemp.getText().equals("ADD TO FAVORITES")) {
+                    tempList = mSharedPreferenceManager.getFavoritesList();
+                    if (tempList == null) {
+                        tempList = new ArrayList<MovieDetail>();
+                    }
+                    tempList.add(mMovieDetail);
+                    mSharedPreferenceManager.saveFavoritesList(tempList);
+                    addRemoveTextAndIconButtonFavorite();
+                    // tempList=mSharedPreferenceManager.getFavoritesList();
+                } else {
+                    tempList= mSharedPreferenceManager.getFavoritesList();
+                    tempList.remove(mMovieDetail);
+                    mSharedPreferenceManager.saveFavoritesList(tempList);
+                    Toast.makeText(getActivity(),"Remove",Toast.LENGTH_SHORT).show();
+                    addAddTextAndIconButtonFavorite();
+                }
+            }
+        });
         //mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds();
         //Trailers
         mListViewTrailers=(ListView) view.findViewById(R.id.listViewTrailers);
@@ -98,14 +126,14 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
         mListViewReviews=(ListView) view.findViewById(R.id.listViewReviews);
         ReviewAdapter reviewAdapter =new ReviewAdapter(getActivity(),mlistReviews);
         mListViewReviews.setAdapter(reviewAdapter);
-//        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent=new Intent(getActivity(),ReviewsDetail.class);
-//                intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
-//                startActivity(intent);
-//            }
-//        });
+        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(getActivity(),ReviewsDetail.class);
+                intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -133,7 +161,7 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
    public void onResume() {
         super.onResume();
         if(mUserRotate!=true) {
-            getMoviesDetail();
+             getMoviesDetail();
         }
         mUserRotate=false;
     }
@@ -143,14 +171,30 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
 
         outState.putParcelable("movieDetails", mMovieDetail);
         outState.putParcelableArrayList("reviewsList", mlistReviews);
-        outState.putParcelableArrayList("trailerList",mlistTrailers);
+        outState.putParcelableArrayList("trailerList", mlistTrailers);
         super.onSaveInstanceState(outState);
     }
 
-    public void getMoviesDetail(){
+    public void  getMoviesDetail(){
 
-        ApiClient.MyApi myApi=ApiClient.getMyApiClient();
-        myApi.getMovieDetails(mMovieId, AppConstants.API_KEY, callbackResponse());
+        if(mFavoritesMode!=true) {
+            ApiClient.MyApi myApi = ApiClient.getMyApiClient();
+            myApi.getMovieDetails(mMovieId, AppConstants.API_KEY, callbackResponse());
+        } else {
+
+            mMovieDetail= mSharedPreferenceManager.getMovieFromFavoritesList(Integer.parseInt(mMovieId));
+            Trailers trailers=mMovieDetail.getTrailers();
+            mlistTrailers.clear();
+            mlistTrailers.addAll(trailers.getYoutubeTrailers());
+            setListViewHeightBasedOnChildren(mListViewTrailers);
+
+            Reviews reviews=mMovieDetail.getReviews();
+            mlistReviews.clear();
+            mlistReviews.addAll(reviews.getListReviews());
+            setListViewHeightBasedOnChildren(mListViewReviews);
+
+            displayDataOnScreen();
+        }
     }
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -221,12 +265,23 @@ public class DetailActivityFragment extends Fragment implements AdapterView.OnIt
         }
 
         mTvReleaseDate.setText(formattedDate);
-        mTvRate.setText(mMovieDetail.getVote_average()+"/10"+"("+mMovieDetail.getVote_count()+" votes)");
+        mTvRate.setText(mMovieDetail.getVote_average() + "/10" + "(" + mMovieDetail.getVote_count() + " votes)");
         mTvSynopsis.setText(mMovieDetail.getOverview());
+        if(mSharedPreferenceManager.isMovieInFavorites(mMovieDetail)){
+            addRemoveTextAndIconButtonFavorite();
+        } else {
+            addAddTextAndIconButtonFavorite();
+        }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+   public void addAddTextAndIconButtonFavorite() {
+       mBtnFavorite.setText("ADD TO FAVORITES");
+       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_favorite_outline,0);
+   }
+    public void addRemoveTextAndIconButtonFavorite(){
+        mBtnFavorite.setText("REMOVE FROM FAVORITES");
+        mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite, 0);
     }
+
+
 }

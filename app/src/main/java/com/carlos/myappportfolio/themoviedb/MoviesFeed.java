@@ -14,12 +14,14 @@ import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
+import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,6 +38,7 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     private TimeMeasure mTm;
     private boolean mFromDetailsActivity =false;
     private boolean mUserRotation=false;
+    private boolean mFavoritesMode=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,7 +48,8 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         setContentView(R.layout.themoviedb_main);
         mGridView= (GridView) findViewById(R.id.gridView);
         mGridView.setOnItemClickListener(MoviesFeed.this);
-
+        mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
+        mGridView.setAdapter(mMovieAdapter);
         //for tablets specially
 //        float scalefactor = getResources().getDisplayMetrics().density * APPROX_FIXED_IMAGE_WIDTH;
 //        Point size=new Point();
@@ -57,13 +61,11 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
 
         if(savedInstanceState!=null){
             mUserRotation=true;
+            ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
+            tempList=savedInstanceState.getParcelableArrayList("mListMovies");
+            mListMovies.clear();
+            mListMovies.addAll(tempList);
 
-            mListMovies=savedInstanceState.getParcelableArrayList("mListMovies");
-            mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
-            mGridView.setAdapter(mMovieAdapter);
-
-          //  mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
-         //   mGridView.setAdapter(mMovieAdapter);
         }
         mTm.log("END_ONCREATE");
     }
@@ -81,6 +83,8 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         super.onResume();
         if (mFromDetailsActivity !=true && mUserRotation!=true) {
             executeCallToMoviesApi();
+        } else if(mFromDetailsActivity==true && mFavoritesMode==true) {
+            getFavoritesMovies();
         }
          mFromDetailsActivity =false;
          mUserRotation=false;
@@ -114,8 +118,6 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this,SettingsActivity.class));
-            Message.displayToast(this,"despues intent");
-
             return true;
         }
 
@@ -127,6 +129,7 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         Intent intent=new Intent(this,DetailActivity.class);
+        intent.putExtra("favoritesMode",mFavoritesMode);
         intent.putExtra("movieId", mListMovies.get(position).getId());
         mFromDetailsActivity =true;
         startActivity(intent);
@@ -136,7 +139,7 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         String orderStr= sharedPreferences.getString(getString(R.string.pref_order_key),
                 getString(R.string.pref_order_default));
-
+        mFavoritesMode=false;
         if (orderStr.equals(getString(R.string.pref_popularity))){
             setTitle(getString(R.string.mainactivity_title_popularity));
             getMoviesByPopularity();
@@ -146,7 +149,11 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
             setTitle(getString(R.string.mainactivity_title_rate));
             getMoviesByRate();
         }
-
+        if (orderStr.equals(getString(R.string.pref_favorites))) {
+            setTitle(getString(R.string.mainactivity_title_favorites));
+            mFavoritesMode=true;
+            getFavoritesMovies();
+        }
     }
     public void getMoviesByPopularity(){
 
@@ -168,7 +175,8 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
             public void success(Response response, retrofit.client.Response response2) {
             //    Message.displayToast(MoviesFeed.this, "success");
                 mTm.log("BEGIN_CALLBACK");
-                mListMovies =(ArrayList) response.getResults();
+                mListMovies.clear();
+                mListMovies.addAll((ArrayList) response.getResults());
                 mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
                 mGridView.setAdapter(mMovieAdapter);
                 mTm.log("END_CALLBACK");
@@ -189,6 +197,24 @@ public class MoviesFeed extends AppCompatActivity implements AdapterView.OnItemC
     }
 
 
+    public void getFavoritesMovies(){
+        List<MovieDetail> tempListDetail;
+        ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
+        SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(this);
+        tempListDetail = sharedPreferenceManager.getFavoritesList();
+        Response.Movie tempMovie;
+        for (MovieDetail movieDetail : tempListDetail) {
+            tempMovie = new Response.Movie();
+            tempMovie.setId(movieDetail.getId());
+            tempMovie.setPoster_path(movieDetail.getPoster_path());
+            tempList.add(tempMovie);
+        }
+        mListMovies.clear();
+        mListMovies.addAll(tempList);
+        mMovieAdapter = new MovieAdapter(MoviesFeed.this, mListMovies);
+        mGridView.setAdapter(mMovieAdapter);
 
+
+    }
 
 }
