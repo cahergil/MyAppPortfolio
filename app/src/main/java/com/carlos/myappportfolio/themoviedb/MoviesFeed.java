@@ -1,5 +1,6 @@
 package com.carlos.myappportfolio.themoviedb;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class MoviesFeed extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("ACT","MainActivity onCreate");
         setContentView(R.layout.themoviedb_main);
         if(findViewById(R.id.detail_activity_container)!=null) {
             //the detail_activity_container will be present only in large-screen
@@ -49,12 +51,12 @@ public class MoviesFeed extends AppCompatActivity {
             mTwoPane=true;
             //In two-pane mode, show the detail view in this activity by adding
             // or replacing the detail fragment using a fragment transaction
-            DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
+
            // Bundle bundle=new Bundle();
            // bundle.putBoolean("twopane",mTwoPane);
            // detailActivityFragment.setArguments(bundle);
             if (savedInstanceState == null) {
-
+                DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.detail_activity_container, detailActivityFragment)
                         .commit();
@@ -63,6 +65,47 @@ public class MoviesFeed extends AppCompatActivity {
             mTwoPane=false;
 
         }
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        Log.d("ACT", "ManActivity onStart");
+    }
+    @Override
+    protected void onResume() {
+
+
+        super.onResume();
+        Log.d("ACT", "MainActivity onResume");
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        Log.d("ACT", "MainActivity onPause");
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+        Log.d("ACT", "MainActivity onStop");
+    }
+
+    @Override
+    protected void onRestart() {
+
+        super.onRestart();
+        Log.d("ACT", "MainActivity onRestart");
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        Log.d("ACT", "MainActivity onDestroy");
     }
 
     @Override
@@ -101,19 +144,17 @@ public class MoviesFeed extends AppCompatActivity {
         private  boolean mUserRotation=false;
         private  boolean mFavoritesMode=false;
 
+        @Override
+        public void onAttach(Activity activity) {
+
+            super.onAttach(activity);
+            Log.d("ACT", "Fragment onAttach");
+        }
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if(savedInstanceState!=null){
-                mUserRotation=true;
-                ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
-                tempList=savedInstanceState.getParcelableArrayList("mListMovies");
-                mListMovies.clear();
-                mListMovies.addAll(tempList);
-                mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
-                mGridView.setAdapter(mMovieAdapter);
-            }
+            Log.d("ACT", "Fragment onCreate");
         }
 
         @Nullable
@@ -121,10 +162,7 @@ public class MoviesFeed extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             View view= inflater.inflate(R.layout.fragment_moviesfeed, container, false);
-
-
-            mTm =new TimeMeasure("VILLANUEVA");
-            mTm.log("BEGIN_ONCREATE");
+            Log.d("ACT", "Fragment onCreateView");
 
             mGridView= (GridView) view.findViewById(R.id.gridView);
             mGridView.setOnItemClickListener(this);
@@ -138,10 +176,6 @@ public class MoviesFeed extends AppCompatActivity {
 //        int columns = (int) ((float) number / (float) scalefactor);
 //
 //        mGridView.setNumColumns(columns);
-
-
-
-
             if(savedInstanceState!=null){
                 mUserRotation=true;
                 ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
@@ -151,21 +185,53 @@ public class MoviesFeed extends AppCompatActivity {
                 mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                 mGridView.setAdapter(mMovieAdapter);
             }
-            mTm.log("END_ONCREATE");
+
 
             return view;
         }
 
         @Override
+        public void onStart() {
+
+            super.onStart();
+            Log.d("ACT", "Fragment onStart");
+        }
+
+        @Override
+        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
+            super.onActivityCreated(savedInstanceState);
+            Log.d("ACT", "Fragment onActivity");
+        }
+
+        @Override
+        public void onPause() {
+
+            super.onPause();
+            Log.d("ACT", "Fragment onPause");
+        }
+
+        @Override
+        public void onStop() {
+
+            super.onStop();
+            Log.d("ACT", "Fragment onStop");
+        }
+
+        @Override
         public void onSaveInstanceState(Bundle outState) {
+
             super.onSaveInstanceState(outState);
             outState.putParcelableArrayList("mListMovies", mListMovies);
+            Log.d("ACT", "Fragment onSaveInstanceState");
         }
 
 
         @Override
         public void onResume() {
+
             super.onResume();
+            Log.d("ACT", "Fragment onResume");
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
                 executeCallToMoviesApi();
             } else if(mFromDetailsActivity==true && mFavoritesMode==true) {
@@ -175,6 +241,28 @@ public class MoviesFeed extends AppCompatActivity {
             mUserRotation=false;
 
         }
+
+        @Override
+        public void onDestroyView() {
+
+            super.onDestroyView();
+            Log.d("ACT", "Fragment onDestroyView");
+        }
+
+        @Override
+        public void onDestroy() {
+
+            super.onDestroy();
+            Log.d("ACT", "Fragment onDestroy");
+        }
+
+        @Override
+        public void onDetach() {
+
+            super.onDetach();
+            Log.d("ACT", "Fragment onDetach");
+        }
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mTwoPane==true) {
@@ -242,12 +330,12 @@ public class MoviesFeed extends AppCompatActivity {
                 @Override
                 public void success(Response response, retrofit.client.Response response2) {
                     //    Message.displayToast(MoviesFeed.this, "success");
-                    mTm.log("BEGIN_CALLBACK");
+
                     mListMovies.clear();
                     mListMovies.addAll((ArrayList) response.getResults());
                     mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                     mGridView.setAdapter(mMovieAdapter);
-                    mTm.log("END_CALLBACK");
+
 
 
                 }
