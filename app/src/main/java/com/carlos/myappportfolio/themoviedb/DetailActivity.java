@@ -25,7 +25,7 @@ public class DetailActivity extends AppCompatActivity {
             DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
             detailActivityFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container,detailActivityFragment)
+                    .add(R.id.detail_activity_container,detailActivityFragment)
                   //  .add(R.id.container, new DetailFragment())
                     .commit();
         }

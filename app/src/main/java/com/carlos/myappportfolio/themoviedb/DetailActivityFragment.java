@@ -61,8 +61,6 @@ public class DetailActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         TimeMeasure mTm=new TimeMeasure("VILLANUEVA");
     }
 
@@ -71,10 +69,12 @@ public class DetailActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_detail, container, false);
-        Bundle bundle=this.getArguments();
+        Bundle bundle=getArguments();
         mSharedPreferenceManager=new SharedPreferenceManager(getActivity());
-        mMovieId=(String)bundle.get("movieId");
-        mFavoritesMode=bundle.getBoolean("favoritesMode");
+        if (bundle!=null) {
+             mMovieId=(String)bundle.get("movieId");
+             mFavoritesMode=bundle.getBoolean("favoritesMode");
+        }
         mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
         mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
         mTvReleaseDate= (TextView) view.findViewById(R.id.tvReleaseDate);
