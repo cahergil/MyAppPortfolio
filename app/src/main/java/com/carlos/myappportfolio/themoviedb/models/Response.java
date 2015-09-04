@@ -100,6 +100,9 @@ public class Response {
             this.popularity = in.readDouble();
 
         }
+        public Movie(){
+
+        }
         @Override
         public int describeContents() {
             return 0;
