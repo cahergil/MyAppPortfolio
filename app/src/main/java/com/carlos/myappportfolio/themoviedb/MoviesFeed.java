@@ -71,7 +71,7 @@ public class MoviesFeed extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
-        Log.d("ACT", "ManActivity onStart");
+        Log.d("ACT", "MainActivity onStart");
     }
     @Override
     protected void onResume() {
