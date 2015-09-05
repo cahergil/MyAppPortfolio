@@ -27,7 +27,8 @@
             android:name=".themoviedb.DetailActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".themoviedb.MoviesFeed"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+           >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlos.myappportfolio.themoviedb.MoviesFeed" />

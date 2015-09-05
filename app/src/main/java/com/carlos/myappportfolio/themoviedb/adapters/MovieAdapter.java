@@ -64,8 +64,8 @@ public class MovieAdapter extends BaseAdapter {
             int orientation=display.getRotation();
             switch(orientation) {
                 case Surface.ROTATION_0:
-                    imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(270), dpToPx(270)));
-
+                    //imageView.setLayoutParams(new GridView.LayoutParams(dpToPx(180), dpToPx(180)));
+                    imageView.setLayoutParams(new GridView.LayoutParams(500, 720));
                     break;
                 case Surface.ROTATION_90:
                     case Surface.ROTATION_270:

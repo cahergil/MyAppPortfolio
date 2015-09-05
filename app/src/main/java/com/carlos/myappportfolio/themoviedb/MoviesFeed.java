@@ -55,14 +55,16 @@ public class MoviesFeed extends AppCompatActivity {
            // Bundle bundle=new Bundle();
            // bundle.putBoolean("twopane",mTwoPane);
            // detailActivityFragment.setArguments(bundle);
-            if (savedInstanceState == null) {
+       //     if (savedInstanceState == null) {
                 DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.detail_activity_container, detailActivityFragment)
                         .commit();
-            }
+         //   }
         } else {
             mTwoPane=false;
+            
+
 
         }
     }
@@ -144,9 +146,12 @@ public class MoviesFeed extends AppCompatActivity {
         private  boolean mUserRotation=false;
         private  boolean mFavoritesMode=false;
 
+        public MoviesFeedFragment(){
+        }
+
+
         @Override
         public void onAttach(Activity activity) {
-
             super.onAttach(activity);
             Log.d("ACT", "Fragment onAttach");
         }
@@ -168,14 +173,6 @@ public class MoviesFeed extends AppCompatActivity {
             mGridView.setOnItemClickListener(this);
             mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
-            //for tablets specially
-//        float scalefactor = getResources().getDisplayMetrics().density * APPROX_FIXED_IMAGE_WIDTH;
-//        Point size=new Point();
-//        getWindowManager().getDefaultDisplay().getSize(size);
-//        int number=size.x;
-//        int columns = (int) ((float) number / (float) scalefactor);
-//
-//        mGridView.setNumColumns(columns);
             if(savedInstanceState!=null){
                 mUserRotation=true;
                 ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
