@@ -51,16 +51,12 @@ public class MoviesFeed extends AppCompatActivity {
             mTwoPane=true;
             //In two-pane mode, show the detail view in this activity by adding
             // or replacing the detail fragment using a fragment transaction
-
-           // Bundle bundle=new Bundle();
-           // bundle.putBoolean("twopane",mTwoPane);
-           // detailActivityFragment.setArguments(bundle);
-       //     if (savedInstanceState == null) {
+            if (savedInstanceState == null) {
                 DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.detail_activity_container, detailActivityFragment)
                         .commit();
-         //   }
+            }
         } else {
             mTwoPane=false;
             

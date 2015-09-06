@@ -34,6 +34,7 @@
     <string name="detail_runtime">Run time:</string>
     <string name="detail_release_date_text">Release date:</string>
     <string name="detail_rate_text">Rating:</string>
+    <string name="detail_inner_rl_gravity">center</string>
 
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">Settings</string>

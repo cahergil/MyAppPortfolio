@@ -106,7 +106,7 @@ public class DetailActivityFragment extends Fragment {
                 }
             }
         });
-        //mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds();
+
         //Trailers
         mListViewTrailers=(ListView) view.findViewById(R.id.listViewTrailers);
         TrailerAdapter trailerAdapter =new TrailerAdapter(getActivity(),mlistTrailers);

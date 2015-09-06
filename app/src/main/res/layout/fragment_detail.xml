@@ -16,20 +16,20 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/detail_title_height"
+            android:layout_marginBottom="@dimen/detail_title_marginBottom"
             android:background="@color/teal"
             android:paddingLeft="@dimen/detail_title_paddinLeft"
             android:paddingTop="@dimen/detail_title_paddinTop"
-            android:text="prueba"
+
             android:textColor="@color/white"
             android:textSize="@dimen/detail_title_textSize"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/detail_inner_ll_margin_left"
+            android:layout_marginRight="@dimen/detail_inner_ll_margin_right"
             android:orientation="vertical">
 
             <LinearLayout
@@ -45,12 +45,13 @@
 
                     />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    >
 
                     <TextView
+                        android:id="@+id/tvRuntimeEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
                         android:gravity="center"
@@ -60,53 +61,53 @@
                         android:id="@+id/tvRunTime"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
+                        android:layout_below="@+id/tvRuntimeEt"
                         android:gravity="center" />
 
                     <TextView
+                        android:id="@+id/ReleaseDateEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
+                        android:layout_below="@+id/tvRunTime"
                         android:gravity="center"
                         android:text="@string/detail_release_date_text" />
 
                     <TextView
+
                         android:id="@+id/tvReleaseDate"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
+                        android:layout_below="@+id/ReleaseDateEt"
                         android:gravity="center" />
 
                     <TextView
+                        android:id="@+id/tvRateEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
                         android:gravity="center"
+                        android:layout_below="@+id/tvReleaseDate"
                         android:text="@string/detail_rate_text" />
 
                     <TextView
                         android:id="@+id/tvRate"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/detail_layout_height"
+                        android:layout_below="@+id/tvRateEt"
                         android:gravity="center" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="@dimen/detail_button_widht"
+                        android:layout_height="@dimen/detail_button_height"
+                        android:layout_below="@+id/tvRate"
+                        android:background="@drawable/roundedbutton"
+                        android:drawableRight="@drawable/ic_favorite_outline"
+                        android:textColor="@color/grey"
+                        android:layout_centerHorizontal="true" />
 
 
-
-                        <Button
-                            android:id="@+id/btnFavorite"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:text="REMOVE FROM FAVORITES"
-                            android:textColor="#616161"
-                            android:drawableRight="@drawable/ic_favorite_outline"
-                            android:background="@drawable/roundedbutton"
-                             />
-
-                    </RelativeLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -117,10 +118,10 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#000000" />
+                android:layout_height="@dimen/detail_divider_height"
+                android:layout_marginBottom="@dimen/detail_divider_marginBottom"
+                android:layout_marginTop="@dimen/detail_divider_marginTop"
+                android:background="@android:color/black" />
 
 
             <TextView
