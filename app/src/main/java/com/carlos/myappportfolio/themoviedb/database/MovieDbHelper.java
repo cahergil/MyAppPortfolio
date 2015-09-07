@@ -19,39 +19,39 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        final String SQL_CREATE_MOVIEGRID="CREATE TABLE "+ MovieContract.MovieGridViewEntry.TABLE_NAME + "(" +
-                MovieContract.MovieGridViewEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieContract.MovieGridViewEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
-                MovieContract.MovieGridViewEntry.COLUMN_TITLE +    " TEXT NOT NULL," +
-                MovieContract.MovieGridViewEntry.COLUMN_POSTER_PATH + "TEXT NOT NULL);";
+        final String SQL_CREATE_MOVIEGRID="CREATE TABLE "+ MovieContract.GridView.TABLE_NAME + "(" +
+                MovieContract.GridView._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                MovieContract.GridView.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
+                MovieContract.GridView.COLUMN_TITLE +    " TEXT NOT NULL," +
+                MovieContract.GridView.COLUMN_POSTER_PATH + "TEXT NOT NULL);";
 
 
-        final String SQL_CREATE_MOVIEDETAIL="CREATE TABLE "+ MovieContract.MovieDetailsEntry.TABLE_NAME + "(" +
-                MovieContract.MovieDetailsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieContract.MovieDetailsEntry.COLUMN_MOVIE_ID      + " INTEGER NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_TITLE         + " TEXT NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_RUNTIME       + " INTEGER NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_RELEASE_DATE  + " TEXT NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_POSTER_PATH   + " TEXT NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_VOTE_AVERAGE  + " REAL NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_VOTE_COUNT    + " INTEGER NOT NULL," +
-                MovieContract.MovieDetailsEntry.COLUMN_OVERVIEW      + " TEXT NOT NULL);";
+        final String SQL_CREATE_MOVIEDETAIL="CREATE TABLE "+ MovieContract.Detail.TABLE_NAME + "(" +
+                MovieContract.Detail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                MovieContract.Detail.COLUMN_MOVIE_ID      + " INTEGER NOT NULL," +
+                MovieContract.Detail.COLUMN_TITLE         + " TEXT NOT NULL," +
+                MovieContract.Detail.COLUMN_RUNTIME       + " INTEGER NOT NULL," +
+                MovieContract.Detail.COLUMN_RELEASE_DATE  + " TEXT NOT NULL," +
+                MovieContract.Detail.COLUMN_POSTER_PATH   + " TEXT NOT NULL," +
+                MovieContract.Detail.COLUMN_BACKDROP_PATH + " TEXT NOT NULL," +
+                MovieContract.Detail.COLUMN_VOTE_AVERAGE  + " REAL NOT NULL," +
+                MovieContract.Detail.COLUMN_VOTE_COUNT    + " INTEGER NOT NULL," +
+                MovieContract.Detail.COLUMN_OVERVIEW      + " TEXT NOT NULL);";
 
-        final String SQL_CREATE_TRAILER="CREATE TABLE " + MovieContract.MovieTrailersEntry.TABLE_NAME + "(" +
-                MovieContract.MovieTrailersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieContract.MovieTrailersEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
-                MovieContract.MovieTrailersEntry.COLUMN_TRAILER_NAME + " TEXT NOT NULL," +
-                MovieContract.MovieTrailersEntry.COLUMN_SIZE + " TEXT NOT NULL," +
-                MovieContract.MovieTrailersEntry.COLUMN_SOURCE + " TEXT NOT NULL," +
-                MovieContract.MovieTrailersEntry.COLUMN_TYPE + " TEXT NOT NULL);";
+        final String SQL_CREATE_TRAILER="CREATE TABLE " + MovieContract.Trailer.TABLE_NAME + "(" +
+                MovieContract.Trailer._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                MovieContract.Trailer.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
+                MovieContract.Trailer.COLUMN_TRAILER_NAME + " TEXT NOT NULL," +
+                MovieContract.Trailer.COLUMN_SIZE + " TEXT NOT NULL," +
+                MovieContract.Trailer.COLUMN_SOURCE + " TEXT NOT NULL," +
+                MovieContract.Trailer.COLUMN_TYPE + " TEXT NOT NULL);";
 
-        final String SQL_CREATE_REVIEW="CREATE TABLE " + MovieContract.MovieReviewsEntry.TABLE_NAME + "(" +
-                MovieContract.MovieReviewsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieContract.MovieReviewsEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
-                MovieContract.MovieReviewsEntry.COLUMN_PAGE + " INTEGER NOT NULL," +
-                MovieContract.MovieReviewsEntry.COLUMN_AUTHOR + " TEXT NOT NULL," +
-                MovieContract.MovieReviewsEntry.COLUMN_CONTENT + " TEXT NOT NULL);";
+        final String SQL_CREATE_REVIEW="CREATE TABLE " + MovieContract.Review.TABLE_NAME + "(" +
+                MovieContract.Review._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                MovieContract.Review.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
+                MovieContract.Review.COLUMN_PAGE + " INTEGER NOT NULL," +
+                MovieContract.Review.COLUMN_AUTHOR + " TEXT NOT NULL," +
+                MovieContract.Review.COLUMN_CONTENT + " TEXT NOT NULL);";
 
 
 

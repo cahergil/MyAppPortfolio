@@ -1,12 +1,16 @@
 package com.carlos.myappportfolio.themoviedb;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,8 +40,21 @@ import retrofit.RetrofitError;
  */
 public class MoviesFeed extends AppCompatActivity {
     private static boolean mTwoPane;
-
-
+    private static final String FIRST_FRAG ="FIRST_FRAG";
+    private static final String CUSTOM_FRAG ="CUSTOM_FRAG";
+    // Our handler for received Intents. This will be called whenever an Intent
+// with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+            MoviesFeedFragment fragment=(MoviesFeedFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_gridview);
+            if ( fragment.isOnFavoriteMode())
+                    fragment.getFavoritesMovies();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +62,11 @@ public class MoviesFeed extends AppCompatActivity {
         Log.d("ACT","MainActivity onCreate");
         setContentView(R.layout.themoviedb_main);
         if(findViewById(R.id.detail_activity_container)!=null) {
+
+
+            //Register to receive message from DetailActivity
+            LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                    new IntentFilter("custom-event-name"));
             //the detail_activity_container will be present only in large-screen
             //Layouts (res/Layout-sw600dp. If this view is present, then the activity
             //should be in two-pane mode
@@ -52,10 +74,10 @@ public class MoviesFeed extends AppCompatActivity {
             //In two-pane mode, show the detail view in this activity by adding
             // or replacing the detail fragment using a fragment transaction
             if (savedInstanceState == null) {
-                DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.detail_activity_container, detailActivityFragment)
-                        .commit();
+//                DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.detail_activity_container, detailActivityFragment, FIRST_FRAG)
+//                        .commit();
             }
         } else {
             mTwoPane=false;
@@ -101,7 +123,7 @@ public class MoviesFeed extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
         Log.d("ACT", "MainActivity onDestroy");
     }
@@ -145,6 +167,9 @@ public class MoviesFeed extends AppCompatActivity {
         public MoviesFeedFragment(){
         }
 
+        public boolean isOnFavoriteMode(){
+            return (mFavoritesMode==true);
+        }
 
         @Override
         public void onAttach(Activity activity) {
@@ -226,8 +251,19 @@ public class MoviesFeed extends AppCompatActivity {
             super.onResume();
             Log.d("ACT", "Fragment onResume");
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
+                if (mTwoPane==true){
+                DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity()
+                         .getSupportFragmentManager().findFragmentByTag(CUSTOM_FRAG);
+                 if (detailActivityFragment!=null) {
+                     getActivity().getSupportFragmentManager().beginTransaction()
+                             .remove(detailActivityFragment)
+                             .commit();
+                 }
+                }
                 executeCallToMoviesApi();
+
             } else if(mFromDetailsActivity==true && mFavoritesMode==true) {
+
                 getFavoritesMovies();
             }
             mFromDetailsActivity =false;
@@ -266,9 +302,11 @@ public class MoviesFeed extends AppCompatActivity {
                 //movie.setId(mListMovies.get(position).getId());
                 //args.putParcelable("movie",movie);
                 args.putBoolean("favoritesMode",mFavoritesMode);
+                args.putBoolean("twoPaneMode",mTwoPane);
+                args.putString("customFrag",CUSTOM_FRAG);
                 detailActivityFragment.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.detail_activity_container,detailActivityFragment)
+                        .replace(R.id.detail_activity_container,detailActivityFragment, CUSTOM_FRAG)
                         .commit();
 
 

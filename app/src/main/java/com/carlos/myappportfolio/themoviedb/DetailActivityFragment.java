@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,8 @@ public class DetailActivityFragment extends Fragment {
     private ListView mListViewReviews;
     private Button mBtnFavorite;
     private boolean mFavoritesMode=false;
+    private boolean mTwoPaneMode;
+    private String mCustomFrag;
 
     public DetailActivityFragment() {
     }
@@ -74,6 +77,8 @@ public class DetailActivityFragment extends Fragment {
         if (bundle!=null) {
              mMovieId=(String)bundle.get("movieId");
              mFavoritesMode=bundle.getBoolean("favoritesMode");
+             mTwoPaneMode=bundle.getBoolean("twoPaneMode");
+             mCustomFrag=bundle.getString("customFrag");
         }
         mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
         mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
@@ -86,7 +91,15 @@ public class DetailActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Button btnTemp=(Button)v;
+                if (mTwoPaneMode==true && mFavoritesMode==true) {
+                    sendMessage();
+                    DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity().getSupportFragmentManager()
+                            .findFragmentByTag(mCustomFrag);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .remove(detailActivityFragment)
+                            .commit();
 
+                }
                 List<MovieDetail> tempList;
                 if (btnTemp.getText().equals("ADD TO FAVORITES")) {
                     tempList = mSharedPreferenceManager.getFavoritesList();
@@ -156,7 +169,14 @@ public class DetailActivityFragment extends Fragment {
         return view;
     }
 
+    public void sendMessage(){
 
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", "This is my message!");
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
     @Override
    public void onResume() {
         super.onResume();
@@ -250,7 +270,7 @@ public class DetailActivityFragment extends Fragment {
 
     private void displayDataOnScreen() {
         mTvTitle.setText(mMovieDetail.getTitle());
-        getActivity().setTitle("Details "+ mMovieDetail.getTitle());
+//        getActivity().setTitle("Details "+ mMovieDetail.getTitle());
         String url=AppConstants.POSTER_BASE_URL+mMovieDetail.getPoster_path();
         Picasso.with(getActivity()).load(url).into(mIvPoster);
         mTvRunTime.setText(String.valueOf(mMovieDetail.getRuntime())+"m");
