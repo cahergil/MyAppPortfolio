@@ -1,6 +1,5 @@
 package com.carlos.myappportfolio.themoviedb;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
-import com.carlos.myappportfolio.themoviedb.provider.gridview.GridviewSelection;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
@@ -43,14 +41,11 @@ public class MoviesFeed extends AppCompatActivity {
     private static boolean mTwoPane;
     private static final String FIRST_FRAG ="FIRST_FRAG";
     private static final String CUSTOM_FRAG ="CUSTOM_FRAG";
-    // Our handler for received Intents. This will be called whenever an Intent
-// with an action named "custom-event-name" is broadcasted.
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
-            Log.d("receiver", "Got message: " + message);
+
             MoviesFeedFragment fragment=(MoviesFeedFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_gridview);
             if ( fragment.isOnFavoriteMode())
                     fragment.getFavoritesMovies();
@@ -60,73 +55,28 @@ public class MoviesFeed extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ACT","MainActivity onCreate");
         setContentView(R.layout.themoviedb_main);
         if(findViewById(R.id.detail_activity_container)!=null) {
-
-
-            //Register to receive message from DetailActivity
+        //Register to receive message from DetailActivity
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                    new IntentFilter("custom-event-name"));
+                    new IntentFilter("remove-item-favorites"));
             //the detail_activity_container will be present only in large-screen
             //Layouts (res/Layout-sw600dp. If this view is present, then the activity
             //should be in two-pane mode
             mTwoPane=true;
             //In two-pane mode, show the detail view in this activity by adding
             // or replacing the detail fragment using a fragment transaction
-            if (savedInstanceState == null) {
-//                DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.detail_activity_container, detailActivityFragment, FIRST_FRAG)
-//                        .commit();
-            }
+
         } else {
             mTwoPane=false;
-            
-
-
         }
     }
 
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-        Log.d("ACT", "MainActivity onStart");
-    }
-    @Override
-    protected void onResume() {
-
-
-        super.onResume();
-        Log.d("ACT", "MainActivity onResume");
-    }
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-        Log.d("ACT", "MainActivity onPause");
-    }
-
-    @Override
-    protected void onStop() {
-
-        super.onStop();
-        Log.d("ACT", "MainActivity onStop");
-    }
-
-    @Override
-    protected void onRestart() {
-
-        super.onRestart();
-        Log.d("ACT", "MainActivity onRestart");
-    }
-
-    @Override
+     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
-        Log.d("ACT", "MainActivity onDestroy");
+
     }
 
     @Override
@@ -172,17 +122,6 @@ public class MoviesFeed extends AppCompatActivity {
             return (mFavoritesMode==true);
         }
 
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            Log.d("ACT", "Fragment onAttach");
-        }
-
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            Log.d("ACT", "Fragment onCreate");
-        }
 
         @Nullable
         @Override
@@ -209,40 +148,15 @@ public class MoviesFeed extends AppCompatActivity {
             return view;
         }
 
-        @Override
-        public void onStart() {
 
-            super.onStart();
-            Log.d("ACT", "Fragment onStart");
-        }
 
-        @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-            super.onActivityCreated(savedInstanceState);
-            Log.d("ACT", "Fragment onActivity");
-        }
-
-        @Override
-        public void onPause() {
-
-            super.onPause();
-            Log.d("ACT", "Fragment onPause");
-        }
-
-        @Override
-        public void onStop() {
-
-            super.onStop();
-            Log.d("ACT", "Fragment onStop");
-        }
 
         @Override
         public void onSaveInstanceState(Bundle outState) {
 
             super.onSaveInstanceState(outState);
             outState.putParcelableArrayList("mListMovies", mListMovies);
-            Log.d("ACT", "Fragment onSaveInstanceState");
+
         }
 
 
@@ -250,7 +164,7 @@ public class MoviesFeed extends AppCompatActivity {
         public void onResume() {
 
             super.onResume();
-            Log.d("ACT", "Fragment onResume");
+
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
                 if (mTwoPane==true){
                 DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity()
@@ -273,35 +187,11 @@ public class MoviesFeed extends AppCompatActivity {
         }
 
         @Override
-        public void onDestroyView() {
-
-            super.onDestroyView();
-            Log.d("ACT", "Fragment onDestroyView");
-        }
-
-        @Override
-        public void onDestroy() {
-
-            super.onDestroy();
-            Log.d("ACT", "Fragment onDestroy");
-        }
-
-        @Override
-        public void onDetach() {
-
-            super.onDetach();
-            Log.d("ACT", "Fragment onDetach");
-        }
-
-        @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mTwoPane==true) {
                 DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
                 Bundle args=new Bundle();
                 args.putString("movieId", String.valueOf(mListMovies.get(position).getId()));
-                //Response.Movie movie=new Response.Movie();
-                //movie.setId(mListMovies.get(position).getId());
-                //args.putParcelable("movie",movie);
                 args.putBoolean("favoritesMode",mFavoritesMode);
                 args.putBoolean("twoPaneMode",mTwoPane);
                 args.putString("customFrag", CUSTOM_FRAG);
@@ -367,8 +257,8 @@ public class MoviesFeed extends AppCompatActivity {
                     mListMovies.addAll((ArrayList) response.getResults());
                     mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                     mGridView.setAdapter(mMovieAdapter);
-                    GridviewSelection selection=new GridviewSelection();
-                    selection.delete(getActivity().getContentResolver());
+                  //  GridviewSelection selection=new GridviewSelection();
+                 //   selection.delete(getActivity().getContentResolver());
 
 
 

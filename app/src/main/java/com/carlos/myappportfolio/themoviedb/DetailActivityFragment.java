@@ -109,7 +109,7 @@ public class DetailActivityFragment extends Fragment {
                     tempList.add(mMovieDetail);
                     mSharedPreferenceManager.saveFavoritesList(tempList);
                     addRemoveTextAndIconButtonFavorite();
-                    // tempList=mSharedPreferenceManager.getFavoritesList();
+
                 } else {
                     tempList= mSharedPreferenceManager.getFavoritesList();
                     tempList.remove(mMovieDetail);
@@ -142,6 +142,7 @@ public class DetailActivityFragment extends Fragment {
         mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent=new Intent(getActivity(),ReviewsDetail.class);
                 intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
                 startActivity(intent);
@@ -171,19 +172,19 @@ public class DetailActivityFragment extends Fragment {
 
     public void sendMessage(){
 
-        Log.d("sender", "Broadcasting message");
-        Intent intent = new Intent("custom-event-name");
-        // You can also include some extra data.
-        intent.putExtra("message", "This is my message!");
+
+        Intent intent = new Intent("remove-item-favorites");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
     @Override
    public void onResume() {
         super.onResume();
         if(mUserRotate!=true) {
+
              getMoviesDetail();
         }
         mUserRotate=false;
+
     }
 
     @Override
