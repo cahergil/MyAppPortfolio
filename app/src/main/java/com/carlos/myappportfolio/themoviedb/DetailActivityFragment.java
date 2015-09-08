@@ -92,7 +92,7 @@ public class DetailActivityFragment extends Fragment {
             public void onClick(View v) {
                 Button btnTemp=(Button)v;
                 if (mTwoPaneMode==true && mFavoritesMode==true) {
-                    sendMessage();
+                    sendFavoriteRemovedBroadcast();
                     DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity().getSupportFragmentManager()
                             .findFragmentByTag(mCustomFrag);
                     getActivity().getSupportFragmentManager().beginTransaction()
@@ -101,7 +101,7 @@ public class DetailActivityFragment extends Fragment {
 
                 }
                 List<MovieDetail> tempList;
-                if (btnTemp.getText().equals("ADD TO FAVORITES")) {
+                if (btnTemp.getText().equals(getString(R.string.favorites_add))) {
                     tempList = mSharedPreferenceManager.getFavoritesList();
                     if (tempList == null) {
                         tempList = new ArrayList<MovieDetail>();
@@ -170,8 +170,7 @@ public class DetailActivityFragment extends Fragment {
         return view;
     }
 
-    public void sendMessage(){
-
+    public void sendFavoriteRemovedBroadcast(){
 
         Intent intent = new Intent("remove-item-favorites");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
@@ -296,11 +295,11 @@ public class DetailActivityFragment extends Fragment {
     }
 
    public void addAddTextAndIconButtonFavorite() {
-       mBtnFavorite.setText("ADD TO FAVORITES");
+       mBtnFavorite.setText(getString(R.string.favorites_add));
        mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_favorite_outline,0);
    }
     public void addRemoveTextAndIconButtonFavorite(){
-        mBtnFavorite.setText("REMOVE FROM FAVORITES");
+        mBtnFavorite.setText(getString(R.string.favorites_remove));
         mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite, 0);
     }
 

@@ -22,4 +22,18 @@
     <dimen name="detail_divider_height">1dp</dimen>
     <dimen name="detail_divider_marginBottom">10dp</dimen>
     <dimen name="detail_divider_marginTop">10dp</dimen>
+
+    <!-- Dimensions row_trailer.xml. -->
+    <dimen name="trailer_height">55dp</dimen>
+    <dimen name="trailer_img_height">48dp</dimen>
+    <dimen name="trailer_img_width">48dp</dimen>
+    <dimen name="trailer_text_marginTop">15dp</dimen>
+    <dimen name="trailer_text_paddingLeft">30dp</dimen>
+    <!-- Dimensions row_review.xml. -->
+    <dimen name="review_img_height">48dp</dimen>
+    <dimen name="review_img_width">48dp</dimen>
+    <dimen name="review_text_marginTop">15dp</dimen>
+    <dimen name="review_text_paddingLeft">30dp</dimen>
+
+
 </resources>

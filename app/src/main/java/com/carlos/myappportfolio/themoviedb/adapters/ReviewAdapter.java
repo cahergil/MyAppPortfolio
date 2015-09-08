@@ -39,16 +39,15 @@ public class ReviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textAuthor,textContent;
+        TextView textAuthor;
         View row=convertView;
         if(row==null){
             LayoutInflater layoutInflater= (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row= layoutInflater.inflate(R.layout.row_review,parent,false);
         }
         textAuthor= (TextView) row.findViewById(R.id.tvAutor);
-        textAuthor.setText("Author:"+mListReviews.get(position).getAuthor());
-        //textContent=(TextView) row.findViewById(R.id.tvContent);
-        //textContent.setText(mListReviews.get(position).getContent());
+        textAuthor.setText(mListReviews.get(position).getAuthor());
+
         return row;
     }
 }

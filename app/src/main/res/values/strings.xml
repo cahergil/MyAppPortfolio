@@ -43,4 +43,7 @@
     <string name="mainactivity_title_rate">Movies by rate</string>
     <string name="mainactivity_title_favorites">Favorites movies</string>
     <string name="title_activity_reviews_detail">ReviewsDetail</string>
+    <!--  favorites strings -->
+    <string name="favorites_add">ADD TO FAVORITES</string>
+    <string name="favorites_remove">REMOVE FROM FAVORITES</string>
 </resources>

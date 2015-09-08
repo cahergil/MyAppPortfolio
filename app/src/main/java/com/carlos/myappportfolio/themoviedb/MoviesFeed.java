@@ -39,7 +39,7 @@ import retrofit.RetrofitError;
  */
 public class MoviesFeed extends AppCompatActivity {
     private static boolean mTwoPane;
-    private static final String FIRST_FRAG ="FIRST_FRAG";
+
     private static final String CUSTOM_FRAG ="CUSTOM_FRAG";
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -128,7 +128,6 @@ public class MoviesFeed extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             View view= inflater.inflate(R.layout.fragment_moviesfeed, container, false);
-            Log.d("ACT", "Fragment onCreateView");
 
             mGridView= (GridView) view.findViewById(R.id.gridView);
             mGridView.setOnItemClickListener(this);
@@ -143,12 +142,8 @@ public class MoviesFeed extends AppCompatActivity {
                 mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                 mGridView.setAdapter(mMovieAdapter);
             }
-
-
-            return view;
+           return view;
         }
-
-
 
 
         @Override
