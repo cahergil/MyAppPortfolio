@@ -18,9 +18,26 @@ public class SharedPreferenceManager {
     private SharedPreferences mSharedPreferences;
     private static final String PREF_FILE_NAME="sp_file";
     private static final String FAVORITES_KEY="favorites";
+    private static final String FROM_REVIEW_DETAILS="fromReviewDetails";
+
     public SharedPreferenceManager(Context context){
         this.mContext=context;
         mSharedPreferences=context.getSharedPreferences(PREF_FILE_NAME,Context.MODE_PRIVATE);
+    }
+    public void setFromReviewDetails(boolean value){
+        SharedPreferences.Editor editor;
+        editor=mSharedPreferences.edit();
+        editor.putBoolean(FROM_REVIEW_DETAILS,value);
+        editor.commit();
+
+    }
+
+    public boolean getSharedVariable(){
+        boolean temp=false;
+        if(mSharedPreferences.contains(FROM_REVIEW_DETAILS)){
+            temp=mSharedPreferences.getBoolean(FROM_REVIEW_DETAILS,false);
+        }
+        return temp;
     }
     public void saveFavoritesList(List<MovieDetail> list){
         SharedPreferences.Editor editor;

@@ -53,7 +53,9 @@ public class DetailActivityFragment extends Fragment {
     private Button mBtnFavorite;
     private boolean mFavoritesMode=false;
     private boolean mTwoPaneMode;
+    private boolean mRemoveFragment=false;
     private String mCustomFrag;
+
 
     public DetailActivityFragment() {
     }
@@ -89,7 +91,8 @@ public class DetailActivityFragment extends Fragment {
             public void onClick(View v) {
                 Button btnTemp=(Button)v;
                 if (mTwoPaneMode==true && mFavoritesMode==true) {
-                    sendFavoriteRemovedBroadcast();
+                    mRemoveFragment=true;
+                    sendBundleBroadcast();
                     DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity().getSupportFragmentManager()
                             .findFragmentByTag(mCustomFrag);
                     getActivity().getSupportFragmentManager().beginTransaction()
@@ -138,7 +141,7 @@ public class DetailActivityFragment extends Fragment {
         mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                mSharedPreferenceManager.setFromReviewDetails(true);
                 Intent intent=new Intent(getActivity(),ReviewsDetail.class);
                 intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
                 startActivity(intent);
@@ -166,19 +169,26 @@ public class DetailActivityFragment extends Fragment {
         return view;
     }
 
-    public void sendFavoriteRemovedBroadcast(){
+    public void sendBundleBroadcast(){
 
         Intent intent = new Intent("remove-item-favorites");
+        Bundle bundle=new Bundle();
+        if(mRemoveFragment==true){
+            bundle.putBoolean("removeFragment", mRemoveFragment);
+            intent.putExtras(bundle);
+        }
+
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
+
     @Override
    public void onResume() {
         super.onResume();
         if(mUserRotate!=true) {
-
              getMoviesDetail();
         }
         mUserRotate=false;
+
 
     }
 

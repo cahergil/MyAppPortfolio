@@ -45,10 +45,14 @@ public class MoviesFeed extends AppCompatActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Bundle bundle=intent.getExtras();
+            if (bundle.getBoolean("removeFragment")) {
 
-            MoviesFeedFragment fragment=(MoviesFeedFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_gridview);
-            if ( fragment.isOnFavoriteMode())
+                MoviesFeedFragment fragment = (MoviesFeedFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_gridview);
+                if (fragment.isOnFavoriteMode())
                     fragment.getFavoritesMovies();
+            }
         }
     };
 
@@ -114,6 +118,8 @@ public class MoviesFeed extends AppCompatActivity {
         private  boolean mFromDetailsActivity =false;
         private  boolean mUserRotation=false;
         private  boolean mFavoritesMode=false;
+        private static boolean mFromReviewDetails=false;
+
 
         public MoviesFeedFragment(){
         }
@@ -157,18 +163,19 @@ public class MoviesFeed extends AppCompatActivity {
 
         @Override
         public void onResume() {
-
+            SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(getActivity());
             super.onResume();
 
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
-                if (mTwoPane==true){
-                DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity()
-                         .getSupportFragmentManager().findFragmentByTag(CUSTOM_FRAG);
-                 if (detailActivityFragment!=null) {
-                     getActivity().getSupportFragmentManager().beginTransaction()
-                             .remove(detailActivityFragment)
-                             .commit();
-                 }
+                boolean temp=sharedPreferenceManager.getSharedVariable();
+                if (mTwoPane==true && temp!=true){
+                    DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity()
+                             .getSupportFragmentManager().findFragmentByTag(CUSTOM_FRAG);
+                     if (detailActivityFragment!=null) {
+                         getActivity().getSupportFragmentManager().beginTransaction()
+                                 .remove(detailActivityFragment)
+                                 .commit();
+                     }
                 }
                 executeCallToMoviesApi();
 
@@ -178,6 +185,8 @@ public class MoviesFeed extends AppCompatActivity {
             }
             mFromDetailsActivity =false;
             mUserRotation=false;
+            sharedPreferenceManager.setFromReviewDetails(false);
+
 
         }
 
