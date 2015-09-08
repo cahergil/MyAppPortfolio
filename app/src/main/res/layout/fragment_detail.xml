@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/detail_title_height"
             android:layout_marginBottom="@dimen/detail_title_marginBottom"
-            android:background="@color/teal"
+            android:background="@color/grey_dark"
             android:paddingLeft="@dimen/detail_title_paddinLeft"
             android:paddingTop="@dimen/detail_title_paddinTop"
 

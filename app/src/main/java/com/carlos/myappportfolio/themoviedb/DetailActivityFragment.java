@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.ReviewAdapter;
@@ -24,7 +23,6 @@ import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Reviews;
 import com.carlos.myappportfolio.themoviedb.models.Trailers;
 import com.carlos.myappportfolio.utils.AppConstants;
-import com.carlos.myappportfolio.utils.TimeMeasure;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -43,7 +41,6 @@ import retrofit.RetrofitError;
 public class DetailActivityFragment extends Fragment {
 
     private String mMovieId;
-    private TimeMeasure mTm;
     private MovieDetail mMovieDetail;
     private TextView mTvTitle,mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
     private ImageView mIvPoster;
@@ -64,7 +61,7 @@ public class DetailActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TimeMeasure mTm=new TimeMeasure("VILLANUEVA");
+
     }
 
     @Override
@@ -114,7 +111,6 @@ public class DetailActivityFragment extends Fragment {
                     tempList= mSharedPreferenceManager.getFavoritesList();
                     tempList.remove(mMovieDetail);
                     mSharedPreferenceManager.saveFavoritesList(tempList);
-                    Toast.makeText(getActivity(),"Remove",Toast.LENGTH_SHORT).show();
                     addAddTextAndIconButtonFavorite();
                 }
             }
@@ -295,11 +291,11 @@ public class DetailActivityFragment extends Fragment {
     }
 
    public void addAddTextAndIconButtonFavorite() {
-       mBtnFavorite.setText(getString(R.string.favorites_add));
-       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_favorite_outline,0);
+       mBtnFavorite.setText("ADD TO FAVORITES");
+       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite_outline, 0);
    }
     public void addRemoveTextAndIconButtonFavorite(){
-        mBtnFavorite.setText(getString(R.string.favorites_remove));
+        mBtnFavorite.setText("REMOVE FROM FAVORITES");
         mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite, 0);
     }
 
