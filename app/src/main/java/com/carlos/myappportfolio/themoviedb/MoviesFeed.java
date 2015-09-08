@@ -110,7 +110,7 @@ public class MoviesFeed extends AppCompatActivity {
 
     public static class MoviesFeedFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-        private static final int APPROX_FIXED_IMAGE_WIDTH=170;
+
         private  GridView mGridView;
         private  MovieAdapter mMovieAdapter;
         private  ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
@@ -118,7 +118,7 @@ public class MoviesFeed extends AppCompatActivity {
         private  boolean mFromDetailsActivity =false;
         private  boolean mUserRotation=false;
         private  boolean mFavoritesMode=false;
-        private static boolean mFromReviewDetails=false;
+
 
 
         public MoviesFeedFragment(){
@@ -163,12 +163,11 @@ public class MoviesFeed extends AppCompatActivity {
 
         @Override
         public void onResume() {
-            SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(getActivity());
             super.onResume();
-
+            SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(getActivity());
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
-                boolean temp=sharedPreferenceManager.getSharedVariable();
-                if (mTwoPane==true && temp!=true){
+                boolean fromDetailsScreen=sharedPreferenceManager.getSharedVariable();
+                if (mTwoPane==true && fromDetailsScreen!=true){
                     DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity()
                              .getSupportFragmentManager().findFragmentByTag(CUSTOM_FRAG);
                      if (detailActivityFragment!=null) {
@@ -185,7 +184,7 @@ public class MoviesFeed extends AppCompatActivity {
             }
             mFromDetailsActivity =false;
             mUserRotation=false;
-            sharedPreferenceManager.setFromReviewDetails(false);
+            sharedPreferenceManager.setFromDetailsScreen(false);
 
 
         }

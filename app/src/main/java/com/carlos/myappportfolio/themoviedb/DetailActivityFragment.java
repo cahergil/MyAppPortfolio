@@ -128,6 +128,7 @@ public class DetailActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
                 String buildUrl;
+                mSharedPreferenceManager.setFromDetailsScreen(true);
                 buildUrl=AppConstants.YOURTUBE_BASE_URL+mlistTrailers.get(position).getSource();
                 intent =new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
                 startActivity(intent);
@@ -141,7 +142,7 @@ public class DetailActivityFragment extends Fragment {
         mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mSharedPreferenceManager.setFromReviewDetails(true);
+                mSharedPreferenceManager.setFromDetailsScreen(true);
                 Intent intent=new Intent(getActivity(),ReviewsDetail.class);
                 intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
                 startActivity(intent);
@@ -302,11 +303,11 @@ public class DetailActivityFragment extends Fragment {
 
    public void addAddTextAndIconButtonFavorite() {
        mBtnFavorite.setText("ADD TO FAVORITES");
-       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite_outline, 0);
+       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_favorite_outline, 0);
    }
     public void addRemoveTextAndIconButtonFavorite(){
         mBtnFavorite.setText("REMOVE FROM FAVORITES");
-        mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_favorite, 0);
+        mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_favorite, 0);
     }
 
 

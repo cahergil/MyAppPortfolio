@@ -6,7 +6,7 @@
    <ImageView
        android:layout_width="@dimen/trailer_img_width"
        android:layout_height="@dimen/trailer_img_height"
-       android:src="@drawable/play"
+       android:src="@mipmap/ic_play"
        android:id="@+id/ivStart"/>
     <TextView
         android:layout_width="match_parent"

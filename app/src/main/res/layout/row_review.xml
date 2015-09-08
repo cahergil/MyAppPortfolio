@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="@dimen/review_img_width"
         android:layout_height="@dimen/review_img_height"
-        android:src="@drawable/review"
+        android:src="@mipmap/ic_review"
         android:id="@+id/ivReview"/>
     <TextView
         android:layout_width="match_parent"

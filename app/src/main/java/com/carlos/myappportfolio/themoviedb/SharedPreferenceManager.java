@@ -24,7 +24,7 @@ public class SharedPreferenceManager {
         this.mContext=context;
         mSharedPreferences=context.getSharedPreferences(PREF_FILE_NAME,Context.MODE_PRIVATE);
     }
-    public void setFromReviewDetails(boolean value){
+    public void setFromDetailsScreen(boolean value){
         SharedPreferences.Editor editor;
         editor=mSharedPreferences.edit();
         editor.putBoolean(FROM_REVIEW_DETAILS,value);

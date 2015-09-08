@@ -100,6 +100,8 @@
                         android:id="@+id/btnFavorite"
                         android:layout_width="@dimen/detail_button_widht"
                         android:layout_height="@dimen/detail_button_height"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
                         android:layout_below="@+id/tvRate"
                         android:background="@drawable/roundedbutton"
                         android:drawableRight="@drawable/ic_favorite_outline"
