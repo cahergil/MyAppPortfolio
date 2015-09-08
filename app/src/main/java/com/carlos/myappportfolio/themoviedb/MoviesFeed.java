@@ -25,6 +25,7 @@ import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
+import com.carlos.myappportfolio.themoviedb.provider.gridview.GridviewSelection;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
@@ -303,7 +304,7 @@ public class MoviesFeed extends AppCompatActivity {
                 //args.putParcelable("movie",movie);
                 args.putBoolean("favoritesMode",mFavoritesMode);
                 args.putBoolean("twoPaneMode",mTwoPane);
-                args.putString("customFrag",CUSTOM_FRAG);
+                args.putString("customFrag", CUSTOM_FRAG);
                 detailActivityFragment.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.detail_activity_container,detailActivityFragment, CUSTOM_FRAG)
@@ -366,6 +367,8 @@ public class MoviesFeed extends AppCompatActivity {
                     mListMovies.addAll((ArrayList) response.getResults());
                     mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                     mGridView.setAdapter(mMovieAdapter);
+                    GridviewSelection selection=new GridviewSelection();
+                    selection.delete(getActivity().getContentResolver());
 
 
 

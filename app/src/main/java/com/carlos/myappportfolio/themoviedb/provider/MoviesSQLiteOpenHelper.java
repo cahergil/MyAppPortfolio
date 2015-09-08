@@ -37,7 +37,7 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
             + DetailColumns.VOTE_AVERAGE + " REAL NOT NULL, "
             + DetailColumns.VOTE_COUNT + " INTEGER NOT NULL, "
             + DetailColumns.OVERVIEW + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_movieid UNIQUE (movie_id) ON CONCLICT REPLACE"
+            + ", CONSTRAINT unique_movieid UNIQUE (movie_id) ON CONFLICT REPLACE"
             + " );";
 
     public static final String SQL_CREATE_TABLE_GRIDVIEW = "CREATE TABLE IF NOT EXISTS "
@@ -46,7 +46,7 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
             + GridviewColumns.MOVIE_ID + " INTEGER NOT NULL, "
             + GridviewColumns.TITLE + " TEXT NOT NULL, "
             + GridviewColumns.POSTER_PATH + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_id UNIQUE (movie_id) ON CONCLICT REPLACE"
+            + ", CONSTRAINT unique_id UNIQUE (movie_id) ON CONFLICT REPLACE"
             + " );";
 
     public static final String SQL_CREATE_TABLE_REVIEW = "CREATE TABLE IF NOT EXISTS "
@@ -56,7 +56,7 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
             + ReviewColumns.PAGE + " TEXT NOT NULL, "
             + ReviewColumns.AUTHOR + " TEXT NOT NULL, "
             + ReviewColumns.CONTENT + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_author UNIQUE (movie_id,author) ON CONCLICT REPLACE"
+            + ", CONSTRAINT unique_author UNIQUE (movie_id,author) ON CONFLICT REPLACE"
             + " );";
 
     public static final String SQL_CREATE_TABLE_TRAILER = "CREATE TABLE IF NOT EXISTS "
@@ -67,7 +67,7 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
             + TrailerColumns.SIZE + " TEXT NOT NULL, "
             + TrailerColumns.SOURCE + " TEXT NOT NULL, "
             + TrailerColumns.TYPE + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_trailer UNIQUE (movie_id,trailer_name) ON CONCLICT REPLACE"
+            + ", CONSTRAINT unique_trailer UNIQUE (movie_id,trailer_name) ON CONFLICT REPLACE"
             + " );";
 
     // @formatter:on

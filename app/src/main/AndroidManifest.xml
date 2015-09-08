@@ -50,6 +50,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlos.myappportfolio.themoviedb.DetailActivity" />
         </activity>
+        <provider
+            android:authorities="com.carlos.myappportfolio.themoviedb.provider"
+            android:name=".themoviedb.provider.MoviesProvider">
+
+        </provider>
     </application>
 
 </manifest>
