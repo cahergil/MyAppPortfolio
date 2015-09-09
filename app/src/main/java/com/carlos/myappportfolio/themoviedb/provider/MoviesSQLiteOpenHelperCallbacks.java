@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import android.util.Log;
 
-import com.carlos.myappportfolio.themoviedb.BuildConfig;
+import com.carlos.myappportfolio.utils.BuildConfig;
 
 /**
  * Implement your custom database creation or upgrade code here.

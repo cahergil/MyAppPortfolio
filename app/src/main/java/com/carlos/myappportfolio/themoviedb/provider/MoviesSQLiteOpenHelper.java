@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-import com.carlos.myappportfolio.themoviedb.BuildConfig;
+import com.carlos.myappportfolio.utils.BuildConfig;
 import com.carlos.myappportfolio.themoviedb.provider.detail.DetailColumns;
 import com.carlos.myappportfolio.themoviedb.provider.gridview.GridviewColumns;
 import com.carlos.myappportfolio.themoviedb.provider.review.ReviewColumns;
