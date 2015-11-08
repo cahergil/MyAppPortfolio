@@ -1,5 +1,6 @@
 package com.carlos.myappportfolio.themoviedb;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -118,7 +119,7 @@ public class MoviesFeed extends AppCompatActivity {
         private  boolean mFromDetailsActivity =false;
         private  boolean mUserRotation=false;
         private  boolean mFavoritesMode=false;
-
+        private ProgressDialog mProgressDialog;
 
 
         public MoviesFeedFragment(){
@@ -164,6 +165,7 @@ public class MoviesFeed extends AppCompatActivity {
         @Override
         public void onResume() {
             super.onResume();
+
             SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(getActivity());
             if (mFromDetailsActivity !=true && mUserRotation!=true) {
                 boolean fromDetailsScreen=sharedPreferenceManager.getSharedVariable();
@@ -176,10 +178,11 @@ public class MoviesFeed extends AppCompatActivity {
                                  .commit();
                      }
                 }
+                mProgressDialog=ProgressDialog.show(getActivity(),"","Loading data",true);
                 executeCallToMoviesApi();
 
             } else if(mFromDetailsActivity==true && mFavoritesMode==true) {
-
+                mProgressDialog=ProgressDialog.show(getActivity(),"","Loading data",true);
                 getFavoritesMovies();
             }
             mFromDetailsActivity =false;
@@ -263,7 +266,7 @@ public class MoviesFeed extends AppCompatActivity {
                   //  GridviewSelection selection=new GridviewSelection();
                  //   selection.delete(getActivity().getContentResolver());
 
-
+                     mProgressDialog.dismiss();
 
                 }
 
@@ -294,7 +297,7 @@ public class MoviesFeed extends AppCompatActivity {
             }
             mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
-
+            mProgressDialog.dismiss();
 
         }
 
