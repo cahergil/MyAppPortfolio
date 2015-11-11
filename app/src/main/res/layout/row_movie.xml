@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="170dp"
+    android:layout_height="260dp"
+    >
+
+    <ImageView
+        android:id="@+id/imgPoster"
+        android:layout_width="170dp"
+        android:layout_height="260dp"
+        android:src="@drawable/ic_favorite"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:textSize="17sp"
+            android:paddingLeft="5dp"
+            android:background="#80000000"
+            android:layout_marginTop="187dp"
+            android:textColor="@android:color/white"
+            android:text="hola mundo"/>
+    </LinearLayout>
+
+</FrameLayout>

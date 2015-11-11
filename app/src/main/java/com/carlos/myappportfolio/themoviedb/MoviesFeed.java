@@ -23,6 +23,7 @@ import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
+import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter1;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
@@ -113,7 +114,7 @@ public class MoviesFeed extends AppCompatActivity {
 
 
         private  GridView mGridView;
-        private  MovieAdapter mMovieAdapter;
+        private  MovieAdapter1 mMovieAdapter;
         private  ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
         private  TimeMeasure mTm;
         private  boolean mFromDetailsActivity =false;
@@ -138,7 +139,7 @@ public class MoviesFeed extends AppCompatActivity {
 
             mGridView= (GridView) view.findViewById(R.id.gridView);
             mGridView.setOnItemClickListener(this);
-            mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
+            mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
             if(savedInstanceState!=null){
                 mUserRotation=true;
@@ -146,7 +147,7 @@ public class MoviesFeed extends AppCompatActivity {
                 tempList=savedInstanceState.getParcelableArrayList("mListMovies");
                 mListMovies.clear();
                 mListMovies.addAll(tempList);
-                mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
+                mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
                 mGridView.setAdapter(mMovieAdapter);
             }
            return view;
@@ -261,7 +262,7 @@ public class MoviesFeed extends AppCompatActivity {
 
                     mListMovies.clear();
                     mListMovies.addAll((ArrayList) response.getResults());
-                    mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
+                    mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
                     mGridView.setAdapter(mMovieAdapter);
                   //  GridviewSelection selection=new GridviewSelection();
                  //   selection.delete(getActivity().getContentResolver());
@@ -295,7 +296,7 @@ public class MoviesFeed extends AppCompatActivity {
                 mListMovies.clear();
                 mListMovies.addAll(tempList);
             }
-            mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
+            mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
             mProgressDialog.dismiss();
 
