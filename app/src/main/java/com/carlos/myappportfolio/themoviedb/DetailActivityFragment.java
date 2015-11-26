@@ -3,8 +3,10 @@ package com.carlos.myappportfolio.themoviedb;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +44,8 @@ public class DetailActivityFragment extends Fragment {
 
     private String mMovieId;
     private MovieDetail mMovieDetail;
-    private TextView mTvTitle,mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
-    private ImageView mIvPoster;
+    private TextView mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
+    private ImageView mIvPoster,mIvCollapsingPoster;
     private boolean mUserRotate=false;
     private ArrayList<Trailers.YoutubeEntity> mlistTrailers = new ArrayList<Trailers.YoutubeEntity>();
     private ArrayList<Reviews.ResultsEntity> mlistReviews   = new ArrayList<Reviews.ResultsEntity>();
@@ -55,6 +57,7 @@ public class DetailActivityFragment extends Fragment {
     private boolean mTwoPaneMode;
     private boolean mRemoveFragment=false;
     private String mCustomFrag;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
 
     public DetailActivityFragment() {
@@ -79,12 +82,24 @@ public class DetailActivityFragment extends Fragment {
              mTwoPaneMode=bundle.getBoolean("twoPaneMode");
              mCustomFrag=bundle.getString("customFrag");
         }
-        mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
+         mCollapsingToolbarLayout= (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+
+       // mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
         mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
         mTvReleaseDate= (TextView) view.findViewById(R.id.tvReleaseDate);
         mTvRate= (TextView) view.findViewById(R.id.tvRate);
         mTvSynopsis= (TextView) view.findViewById(R.id.tvSynopsis);
         mIvPoster= (ImageView) view.findViewById(R.id.ivPoster);
+        mIvCollapsingPoster= (ImageView) view.findViewById(R.id.collapsingPoster);
+        Toolbar toolbar= (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
+
         mBtnFavorite= (Button) view.findViewById(R.id.btnFavorite);
         mBtnFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,10 +291,13 @@ public class DetailActivityFragment extends Fragment {
     }
 
     private void displayDataOnScreen() {
-        mTvTitle.setText(mMovieDetail.getTitle());
+        mCollapsingToolbarLayout.setTitle(mMovieDetail.getTitle());
+        //mTvTitle.setText(mMovieDetail.getTitle());
 //        getActivity().setTitle("Details "+ mMovieDetail.getTitle());
-        String url=AppConstants.POSTER_BASE_URL+mMovieDetail.getPoster_path();
-        Picasso.with(getActivity()).load(url).into(mIvPoster);
+        String pathPoster=AppConstants.POSTER_BASE_URL+mMovieDetail.getPoster_path();
+        String pathBackdrop=AppConstants.POSTER_BASE_URL+mMovieDetail.getBackdrop_path();
+        Picasso.with(getActivity()).load(pathPoster).into(mIvPoster);
+        Picasso.with(getActivity()).load(pathBackdrop).into(mIvCollapsingPoster);
         mTvRunTime.setText(String.valueOf(mMovieDetail.getRuntime())+"m");
         SimpleDateFormat parser=new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate=null;

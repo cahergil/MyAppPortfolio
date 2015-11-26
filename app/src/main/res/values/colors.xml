@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="custom_background_light_grey">#EEEEEE</color>
+    <color name="brown_300">#A1887F</color>
     <color name="orange">#ffb633</color>
     <color name="dark_pink">#E91E63</color>
     <color name="light_blue">#cbd6ff</color>

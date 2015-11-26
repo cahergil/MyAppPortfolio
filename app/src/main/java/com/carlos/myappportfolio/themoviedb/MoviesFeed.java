@@ -1,17 +1,20 @@
 package com.carlos.myappportfolio.themoviedb;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
 import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter1;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
@@ -62,6 +64,8 @@ public class MoviesFeed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themoviedb_main);
+        Toolbar toolbar= (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
         if(findViewById(R.id.detail_activity_container)!=null) {
         //Register to receive message from DetailActivity
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -136,6 +140,7 @@ public class MoviesFeed extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             View view= inflater.inflate(R.layout.fragment_moviesfeed, container, false);
+
 
             mGridView= (GridView) view.findViewById(R.id.gridView);
             mGridView.setOnItemClickListener(this);
@@ -213,7 +218,13 @@ public class MoviesFeed extends AppCompatActivity {
                 intent.putExtra("favoritesMode", mFavoritesMode);
                 intent.putExtra("movieId", mListMovies.get(position).getId());
                 mFromDetailsActivity = true;
-                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                    getActivity().startActivity(intent,bundle);
+                } else {
+                    startActivity(intent);
+                }
+
             }
         }
 
@@ -301,6 +312,7 @@ public class MoviesFeed extends AppCompatActivity {
             mProgressDialog.dismiss();
 
         }
+
 
 
 

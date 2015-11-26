@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.carlos.myappportfolio" >
+    package="com.carlos.myappportfolio">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -8,10 +8,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/InitialScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,14 +22,16 @@
         <activity
             android:name=".themoviedb.MoviesFeed"
             android:label="Movies Feed"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme.Home"></activity>
         <activity
             android:name=".themoviedb.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".themoviedb.MoviesFeed"
             android:launchMode="singleTop"
-           >
+            android:parentActivityName=".themoviedb.MoviesFeed"
+            android:theme="@style/AppTheme.Detail"
+
+
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlos.myappportfolio.themoviedb.MoviesFeed" />
@@ -36,23 +39,23 @@
         <activity
             android:name=".themoviedb.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".themoviedb.MoviesFeed" >
+            android:parentActivityName=".themoviedb.MoviesFeed">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".themoviedb.MoviesFeed" >
-            </meta-data>
+                android:value=".themoviedb.MoviesFeed"></meta-data>
         </activity>
         <activity
             android:name=".themoviedb.ReviewsDetail"
             android:label="@string/title_activity_reviews_detail"
-            android:parentActivityName=".themoviedb.DetailActivity" >
+            android:parentActivityName=".themoviedb.DetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlos.myappportfolio.themoviedb.DetailActivity" />
         </activity>
+
         <provider
-            android:authorities="com.carlos.myappportfolio.themoviedb.provider"
-            android:name=".themoviedb.provider.MoviesProvider">
+            android:name=".themoviedb.provider.MoviesProvider"
+            android:authorities="com.carlos.myappportfolio.themoviedb.provider">
 
         </provider>
     </application>
