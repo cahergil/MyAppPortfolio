@@ -3,41 +3,54 @@
 
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#795548</item>
-        <item name="colorPrimaryDark">#5D4037</item>
-        <item name="colorAccent">#FF5722</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="android:windowBackground">@color/custom_background_light_grey</item>
+        <item name="android:textColorSecondary">@color/grey_400</item>
+        <item name="android:windowBackground">@color/grey_700</item>
         <item name="dropDownListViewStyle">@style/PopupMenuListView</item>
         <item name="toolbarStyle">@style/Toolbar</item>
 
 
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
     </style>
+
 
     <style name="PopupMenuListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
         <item name="android:divider">@color/white</item>
         <item name="android:dividerHeight">2dp</item>
-        <item name="android:background">#795548</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+    <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">italic</item>
+    </style>
 
+    <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
 
 
     <style name="AppTheme.Home">
-        <item name="android:windowExitTransition">@transition/grid_exit</item>
+        <!--^comment this while shared element transition is on <item name="android:windowExitTransition">@transition/grid_exit</item>. -->
     </style>
 
     <style name="AppTheme.Detail">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
 

@@ -1,30 +1,32 @@
 package com.carlos.myappportfolio.themoviedb;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.adapters.ReviewAdapter;
-import com.carlos.myappportfolio.themoviedb.adapters.TrailerAdapter;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
+import com.carlos.myappportfolio.themoviedb.models.MovieImages;
 import com.carlos.myappportfolio.themoviedb.models.Reviews;
 import com.carlos.myappportfolio.themoviedb.models.Trailers;
 import com.carlos.myappportfolio.utils.AppConstants;
+import com.carlos.myappportfolio.utils.Utilities;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -44,21 +46,25 @@ public class DetailActivityFragment extends Fragment {
 
     private String mMovieId;
     private MovieDetail mMovieDetail;
-    private TextView mTvRunTime,mTvReleaseDate,mTvRate,mTvSynopsis;
-    private ImageView mIvPoster,mIvCollapsingPoster;
-    private boolean mUserRotate=false;
+    private TextView mTvRunTime, mTvReleaseDate, mTvRate, mTvSynopsis;
+    private ImageView mIvPoster, mIvCollapsingPoster;
+    private boolean mUserRotate = false;
     private ArrayList<Trailers.YoutubeEntity> mlistTrailers = new ArrayList<Trailers.YoutubeEntity>();
-    private ArrayList<Reviews.ResultsEntity> mlistReviews   = new ArrayList<Reviews.ResultsEntity>();
+    private ArrayList<Reviews.ResultsEntity> mlistReviews = new ArrayList<Reviews.ResultsEntity>();
+    private ArrayList<MovieImages.BackdropsEntity> mListBackdrops=new ArrayList<MovieImages.BackdropsEntity>();
+    private ArrayList<MovieImages.PostersEntity> mListPoster=new ArrayList<MovieImages.PostersEntity>();
+
     SharedPreferenceManager mSharedPreferenceManager;
-    private ListView mListViewTrailers;
-    private ListView mListViewReviews;
-    private Button mBtnFavorite;
-    private boolean mFavoritesMode=false;
+
+    private ImageView mIvFavorite;
+    private boolean mFavoritesMode = false;
     private boolean mTwoPaneMode;
-    private boolean mRemoveFragment=false;
+    private boolean mRemoveFragment = false;
     private String mCustomFrag;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
-
+    private ScrollView mScrollView;
+    private boolean mMovieInFavorites;
+    private MovieImages mMovieImages;
 
     public DetailActivityFragment() {
     }
@@ -73,25 +79,32 @@ public class DetailActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view= inflater.inflate(R.layout.fragment_detail, container, false);
-        Bundle bundle=getArguments();
-        mSharedPreferenceManager=new SharedPreferenceManager(getActivity());
-        if (bundle!=null) {
-             mMovieId=(String)bundle.get("movieId");
-             mFavoritesMode=bundle.getBoolean("favoritesMode");
-             mTwoPaneMode=bundle.getBoolean("twoPaneMode");
-             mCustomFrag=bundle.getString("customFrag");
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        Bundle bundle = getArguments();
+        mSharedPreferenceManager = new SharedPreferenceManager(getActivity());
+        if (bundle != null) {
+            mMovieId = (String) bundle.get("movieId");
+            mFavoritesMode = bundle.getBoolean("favoritesMode");
+            mTwoPaneMode = bundle.getBoolean("twoPaneMode");
+            mCustomFrag = bundle.getString("customFrag");
         }
-         mCollapsingToolbarLayout= (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "Lobster-Regular.ttf");
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+        mCollapsingToolbarLayout.setExpandedTitleTypeface(typeface);
+        mCollapsingToolbarLayout.setCollapsedTitleTypeface(typeface);
+        //  mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
 
-       // mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
-        mTvRunTime= (TextView) view.findViewById(R.id.tvRunTime);
-        mTvReleaseDate= (TextView) view.findViewById(R.id.tvReleaseDate);
-        mTvRate= (TextView) view.findViewById(R.id.tvRate);
-        mTvSynopsis= (TextView) view.findViewById(R.id.tvSynopsis);
-        mIvPoster= (ImageView) view.findViewById(R.id.ivPoster);
-        mIvCollapsingPoster= (ImageView) view.findViewById(R.id.collapsingPoster);
-        Toolbar toolbar= (Toolbar) view.findViewById(R.id.toolbar);
+        //for transition listener
+        mScrollView = (ScrollView) view.findViewById(R.id.svMain);
+        // mTvTitle= (TextView) view.findViewById(R.id.tvTitle);
+        mTvRunTime = (TextView) view.findViewById(R.id.tvRunTime);
+        mTvReleaseDate = (TextView) view.findViewById(R.id.tvReleaseDate);
+        mTvRate = (TextView) view.findViewById(R.id.tvRate);
+        mTvSynopsis = (TextView) view.findViewById(R.id.tvSynopsis);
+        mIvPoster = (ImageView) view.findViewById(R.id.ivPoster);
+        mIvCollapsingPoster = (ImageView) view.findViewById(R.id.collapsingPoster);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,15 +113,15 @@ public class DetailActivityFragment extends Fragment {
             }
         });
 
-        mBtnFavorite= (Button) view.findViewById(R.id.btnFavorite);
-        mBtnFavorite.setOnClickListener(new View.OnClickListener() {
+        mIvFavorite = (ImageView) view.findViewById(R.id.btnFavorite);
+        mIvFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Button btnTemp=(Button)v;
-                if (mTwoPaneMode==true && mFavoritesMode==true) {
-                    mRemoveFragment=true;
+
+                if (mTwoPaneMode == true && mFavoritesMode == true) {
+                    mRemoveFragment = true;
                     sendBundleBroadcast();
-                    DetailActivityFragment detailActivityFragment=(DetailActivityFragment)getActivity().getSupportFragmentManager()
+                    DetailActivityFragment detailActivityFragment = (DetailActivityFragment) getActivity().getSupportFragmentManager()
                             .findFragmentByTag(mCustomFrag);
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .remove(detailActivityFragment)
@@ -116,80 +129,85 @@ public class DetailActivityFragment extends Fragment {
 
                 }
                 List<MovieDetail> tempList;
-                if (btnTemp.getText().equals(getString(R.string.favorites_add))) {
+                if (!mMovieInFavorites) {
                     tempList = mSharedPreferenceManager.getFavoritesList();
                     if (tempList == null) {
                         tempList = new ArrayList<MovieDetail>();
-                    }
-                    tempList.add(mMovieDetail);
-                    mSharedPreferenceManager.saveFavoritesList(tempList);
-                    addRemoveTextAndIconButtonFavorite();
+                     }
+                     tempList.add(mMovieDetail);
+                     mSharedPreferenceManager.saveFavoritesList(tempList);
+                     Picasso.with(getActivity())
+                             .load(R.drawable.ic_favorite)
+                             .into(mIvFavorite);
+                     mMovieInFavorites=!mMovieInFavorites;
+                    Snackbar.make(v,"Movie added to favorites",Snackbar.LENGTH_LONG).show();
 
                 } else {
                     tempList= mSharedPreferenceManager.getFavoritesList();
                     tempList.remove(mMovieDetail);
                     mSharedPreferenceManager.saveFavoritesList(tempList);
-                    addAddTextAndIconButtonFavorite();
+                    Picasso.with(getActivity())
+                            .load(R.drawable.ic_favorite_outline)
+                            .into(mIvFavorite);
+                    mMovieInFavorites=!mMovieInFavorites;
+                    Snackbar.make(v,"Movie removed from favorites",Snackbar.LENGTH_LONG).show();
+
                 }
             }
         });
 
         //Trailers
-        mListViewTrailers=(ListView) view.findViewById(R.id.listViewTrailers);
-        TrailerAdapter trailerAdapter =new TrailerAdapter(getActivity(),mlistTrailers);
-        mListViewTrailers.setAdapter(trailerAdapter);
-        mListViewTrailers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent;
-                String buildUrl;
-                mSharedPreferenceManager.setFromDetailsScreen(true);
-                buildUrl=AppConstants.YOURTUBE_BASE_URL+mlistTrailers.get(position).getSource();
-                intent =new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
-                startActivity(intent);
-            }
-        });
+
+
+
+//        mListViewTrailers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent;
+//                String buildUrl;
+//                mSharedPreferenceManager.setFromDetailsScreen(true);
+//                buildUrl = AppConstants.YOURTUBE_BASE_URL + mlistTrailers.get(position).getSource();
+//                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
+//                startActivity(intent);
+//            }
+//        });
 
         //Reviews
-        mListViewReviews=(ListView) view.findViewById(R.id.listViewReviews);
-        ReviewAdapter reviewAdapter =new ReviewAdapter(getActivity(),mlistReviews);
-        mListViewReviews.setAdapter(reviewAdapter);
-        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mSharedPreferenceManager.setFromDetailsScreen(true);
-                Intent intent=new Intent(getActivity(),ReviewsDetail.class);
-                intent.putExtra(Intent.EXTRA_TEXT,mlistReviews.get(position).getContent());
-                startActivity(intent);
-            }
-        });
+
+//        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mSharedPreferenceManager.setFromDetailsScreen(true);
+//                Intent intent = new Intent(getActivity(), ReviewsDetail.class);
+//                intent.putExtra(Intent.EXTRA_TEXT, mlistReviews.get(position).getContent());
+//                startActivity(intent);
+//            }
+//        });
 
 
-
-        if(savedInstanceState!=null){
-            mUserRotate=true;
-            mMovieDetail=savedInstanceState.getParcelable("movieDetails");
+        if (savedInstanceState != null) {
+            mUserRotate = true;
+            mMovieDetail = savedInstanceState.getParcelable("movieDetails");
             ArrayList<Reviews.ResultsEntity> listReviewsTemp;
-            listReviewsTemp=savedInstanceState.getParcelableArrayList("reviewsList");
+            listReviewsTemp = savedInstanceState.getParcelableArrayList("reviewsList");
             mlistReviews.addAll(listReviewsTemp);
-            setListViewHeightBasedOnChildren(mListViewReviews);
-            ArrayList<Trailers.YoutubeEntity> listTrailersTemp;
-            listTrailersTemp=savedInstanceState.getParcelableArrayList("trailerList");
-            mlistTrailers.addAll(listTrailersTemp);
-            setListViewHeightBasedOnChildren(mListViewTrailers);
 
-            displayDataOnScreen();
+            ArrayList<Trailers.YoutubeEntity> listTrailersTemp;
+            listTrailersTemp = savedInstanceState.getParcelableArrayList("trailerList");
+            mlistTrailers.addAll(listTrailersTemp);
+
+
         }
 
 
         return view;
     }
 
-    public void sendBundleBroadcast(){
+    public void sendBundleBroadcast() {
 
         Intent intent = new Intent("remove-item-favorites");
-        Bundle bundle=new Bundle();
-        if(mRemoveFragment==true){
+        Bundle bundle = new Bundle();
+        if (mRemoveFragment == true) {
             bundle.putBoolean("removeFragment", mRemoveFragment);
             intent.putExtras(bundle);
         }
@@ -198,12 +216,15 @@ public class DetailActivityFragment extends Fragment {
     }
 
     @Override
-   public void onResume() {
+    public void onResume() {
         super.onResume();
-        if(mUserRotate!=true) {
-             getMoviesDetail();
+        if (mUserRotate != true) {
+            getMoviesDetail();
+
+        } else {
+            displayDataOnScreen();
         }
-        mUserRotate=false;
+        mUserRotate = false;
 
 
     }
@@ -214,67 +235,53 @@ public class DetailActivityFragment extends Fragment {
         outState.putParcelable("movieDetails", mMovieDetail);
         outState.putParcelableArrayList("reviewsList", mlistReviews);
         outState.putParcelableArrayList("trailerList", mlistTrailers);
+        outState.putBoolean("movideInFavorites",mFavoritesMode);
         super.onSaveInstanceState(outState);
     }
 
-    public void  getMoviesDetail(){
 
-        if(mFavoritesMode!=true) {
+    public void getMoviesDetail() {
+
+        if (mFavoritesMode != true) {
             ApiClient.MyApi myApi = ApiClient.getMyApiClient();
             myApi.getMovieDetails(mMovieId, AppConstants.API_KEY, callbackResponse());
         } else {
 
-            mMovieDetail= mSharedPreferenceManager.getMovieFromFavoritesList(Integer.parseInt(mMovieId));
-            Trailers trailers=mMovieDetail.getTrailers();
+            mMovieDetail = mSharedPreferenceManager.getMovieFromFavoritesList(Integer.parseInt(mMovieId));
+            Trailers trailers = mMovieDetail.getTrailers();
             mlistTrailers.clear();
             mlistTrailers.addAll(trailers.getYoutubeTrailers());
-            setListViewHeightBasedOnChildren(mListViewTrailers);
 
-            Reviews reviews=mMovieDetail.getReviews();
+
+            Reviews reviews = mMovieDetail.getReviews();
             mlistReviews.clear();
             mlistReviews.addAll(reviews.getListReviews());
-            setListViewHeightBasedOnChildren(mListViewReviews);
+
 
             displayDataOnScreen();
         }
     }
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-             return;
-        }
 
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
 
-    private Callback<MovieDetail> callbackResponse(){
+    private Callback<MovieDetail> callbackResponse() {
 
         return new Callback<MovieDetail>() {
 
             @Override
             public void success(MovieDetail movieDetail, retrofit.client.Response response) {
-                mMovieDetail=movieDetail;
-                Trailers trailers=mMovieDetail.getTrailers();
-                Reviews reviews=mMovieDetail.getReviews();
+                mMovieDetail = movieDetail;
+//                Trailers trailers = mMovieDetail.getTrailers();
+//                Reviews reviews = mMovieDetail.getReviews();
+//
+//                mlistTrailers.clear();
+//                mlistTrailers.addAll(trailers.getYoutubeTrailers());
+//
+//
+//                mlistReviews.clear();
+//                mlistReviews.addAll(reviews.getListReviews());
 
-                mlistTrailers.clear();
-                mlistTrailers.addAll(trailers.getYoutubeTrailers());
-                setListViewHeightBasedOnChildren(mListViewTrailers);
 
-                mlistReviews.clear();
-                mlistReviews.addAll(reviews.getListReviews());
-
-                setListViewHeightBasedOnChildren(mListViewReviews);
 
                 displayDataOnScreen();
 
@@ -282,7 +289,7 @@ public class DetailActivityFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.v("VILLANUEVA","errro:"+error.getMessage().toString());
+                Log.v("VILLANUEVA", "errro:" + error.getMessage().toString());
 
             }
         };
@@ -292,41 +299,139 @@ public class DetailActivityFragment extends Fragment {
 
     private void displayDataOnScreen() {
         mCollapsingToolbarLayout.setTitle(mMovieDetail.getTitle());
-        //mTvTitle.setText(mMovieDetail.getTitle());
-//        getActivity().setTitle("Details "+ mMovieDetail.getTitle());
-        String pathPoster=AppConstants.POSTER_BASE_URL+mMovieDetail.getPoster_path();
-        String pathBackdrop=AppConstants.POSTER_BASE_URL+mMovieDetail.getBackdrop_path();
-        Picasso.with(getActivity()).load(pathPoster).into(mIvPoster);
-        Picasso.with(getActivity()).load(pathBackdrop).into(mIvCollapsingPoster);
-        mTvRunTime.setText(String.valueOf(mMovieDetail.getRuntime())+"m");
-        SimpleDateFormat parser=new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate=null;
+
+     //   String pathPoster = AppConstants.POSTER_BASE_URL + mMovieDetail.getPoster_path();
+        String pathBackdrop = AppConstants.POSTER_BASE_URL + mMovieDetail.getBackdrop_path();
+
+        //backdrop
+        MovieImages movieImages=mMovieDetail.getImages();
+        List<MovieImages.BackdropsEntity> backdropsList=movieImages.getBackdrops();
+        String pathBackdropFullQuality=null;
+        if(backdropsList!=null) {
+            for(int i=0;i<backdropsList.size();i++) {
+                pathBackdropFullQuality=backdropsList.get(i).getFile_path();
+                if(i==0) {
+                    break;
+                }
+            }
+        }
+        if(pathBackdropFullQuality!=null) {
+            pathBackdropFullQuality = AppConstants.POSTER_HQ_BASE_URL + pathBackdropFullQuality;
+            Picasso.with(getActivity())
+                    .load(pathBackdropFullQuality)
+                    .centerCrop()
+                    .resize((int)Utilities.convertDpToPixel(135,getActivity()),(int)Utilities.convertDpToPixel(166,getActivity()))
+                    .into(mIvPoster);
+        } else {
+            Picasso.with(getActivity()).load(pathBackdrop).into(mIvPoster);
+        }
+        //posters
+        List<MovieImages.PostersEntity> postersList=movieImages.getPosters();
+        String pathPosterFullQuality=null;
+        if (postersList!=null) {
+            for(int i=0; i<postersList.size();i++) {
+               pathPosterFullQuality=postersList.get(i).getFile_path();
+               if(i==0) {
+                   break;
+               }
+            }
+        }
+        if( pathPosterFullQuality!=null) {
+            pathPosterFullQuality=AppConstants.POSTER_HQ_BASE_URL + pathPosterFullQuality;
+            Picasso.with(getActivity()).load(pathPosterFullQuality).into(mIvCollapsingPoster);
+        } else {
+            Picasso.with(getActivity()).load(pathBackdrop).into(mIvCollapsingPoster);
+        }
+
+
+
+        mTvRunTime.setText(String.valueOf(mMovieDetail.getRuntime()) + "m");
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = null;
         try {
-            Date date=parser.parse(mMovieDetail.getRelease_date());
-            SimpleDateFormat formatter=new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-             formattedDate=formatter.format(date);
+            Date date = parser.parse(mMovieDetail.getRelease_date());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+            formattedDate = formatter.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         mTvReleaseDate.setText(formattedDate);
         mTvRate.setText(mMovieDetail.getVote_average() + "/10" + "(" + mMovieDetail.getVote_count() + " votes)");
+        TextView tvSynopsis= (TextView) getView().findViewById(R.id.tvHeaderSynopsis);
+        Typeface typeface=Typeface.createFromAsset(getActivity().getAssets(),"Lobster-Regular.ttf");
+        tvSynopsis.setTypeface(typeface);
         mTvSynopsis.setText(mMovieDetail.getOverview());
-        if(mSharedPreferenceManager.isMovieInFavorites(mMovieDetail)){
-            addRemoveTextAndIconButtonFavorite();
+        int drawableId;
+        if (mSharedPreferenceManager.isMovieInFavorites(mMovieDetail)) {
+            drawableId = R.drawable.ic_favorite;
+            mMovieInFavorites = true;
         } else {
-            addAddTextAndIconButtonFavorite();
+            drawableId = R.drawable.ic_favorite_outline;
+            mMovieInFavorites = false;
+        }
+        Picasso.with(getActivity()).
+                load(drawableId).
+                into(mIvFavorite);
+
+        //reviews
+        TextView tvReviews= (TextView) getView().findViewById(R.id.txtReviews);
+
+        tvReviews.setTypeface(typeface);
+        Reviews reviews=mMovieDetail.getReviews();
+        List<Reviews.ResultsEntity> reviewsList=reviews.getListReviews();
+
+        LinearLayout reviewLinearLayout= (LinearLayout) getView().findViewById(R.id.llReviews);
+        for(int i = 0; i<reviewsList.size();i++) {
+            Reviews.ResultsEntity review =reviewsList.get(i);
+            View view=LayoutInflater.from(getActivity()).inflate(R.layout.reviews,reviewLinearLayout,false);
+            TextView nameAutor= (TextView) view.findViewById(R.id.autorName);
+            nameAutor.setText(review.getAuthor());
+            TextView content= (TextView) view.findViewById(R.id.content);
+            content.setText(review.getContent());
+            reviewLinearLayout.addView(view);
+        }
+
+        if(!mTwoPaneMode) {
+            getActivity().supportStartPostponedEnterTransition();
         }
     }
 
-   public void addAddTextAndIconButtonFavorite() {
-       mBtnFavorite.setText("ADD TO FAVORITES");
-       mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_favorite_outline, 0);
-   }
-    public void addRemoveTextAndIconButtonFavorite(){
-        mBtnFavorite.setText("REMOVE FROM FAVORITES");
-        mBtnFavorite.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_favorite, 0);
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void setTransitionListenerV21() {
+        final Transition fade = getActivity().getWindow().getEnterTransition();
+        //fade.setDuration(200);
+        fade.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                mScrollView.setVisibility(View.VISIBLE);
+
+                fade.removeListener(this);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
+        getActivity().getWindow().setEnterTransition(fade);
+
+
     }
-
-
 }

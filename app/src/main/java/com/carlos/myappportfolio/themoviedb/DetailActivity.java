@@ -36,13 +36,7 @@ public class DetailActivity extends AppCompatActivity {
             DetailActivityFragment detailActivityFragment=new DetailActivityFragment();
             detailActivityFragment.setArguments(bundle);
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                Slide slideTransition = new Slide(Gravity.RIGHT);
-                //this line of code doesn't work
-             //     slideTransition.addTarget(R.id.content_transition);
-                   slideTransition.setInterpolator(AnimationUtils.loadInterpolator(this,
-                           android.R.interpolator.linear_out_slow_in));
-                slideTransition.setDuration(200);
-                getWindow().setEnterTransition(slideTransition);
+                postponeEnterTransition();
             }
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.detail_activity_container,detailActivityFragment)

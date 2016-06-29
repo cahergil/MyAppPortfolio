@@ -24,6 +24,10 @@ public class MovieDetail implements Parcelable {
     private Trailers trailers;
     @SerializedName("reviews")
     private Reviews reviews;
+    @SerializedName("images")
+    private MovieImages images;
+
+
 
     public MovieDetail(){
 
@@ -158,6 +162,7 @@ public class MovieDetail implements Parcelable {
     public Reviews getReviews() {
         return reviews;
     }
+    public MovieImages getImages(){return images;}
 
 
     @Override

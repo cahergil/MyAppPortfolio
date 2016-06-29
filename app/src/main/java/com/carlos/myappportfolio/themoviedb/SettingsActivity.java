@@ -1,13 +1,20 @@
 package com.carlos.myappportfolio.themoviedb;
 
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.carlos.myappportfolio.R;
+import com.carlos.myappportfolio.utils.Utilities;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -22,7 +29,26 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_settings);
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar_activity_settings);
+        toolBar.setTitle(Utilities.setTypeface(this,"Settings"));
+        //final Drawable upArrow= ContextCompat.getDrawable(this,R.drawable.abc_ic_ab_back_material); //23.2
+        //tint the arrow to white
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+        toolBar.setNavigationIcon(upArrow);
+
+
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(SettingsActivity.this);
+            }
+        });
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be

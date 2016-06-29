@@ -1,20 +1,17 @@
 package com.carlos.myappportfolio.themoviedb.adapters;
 
 import android.content.Context;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.carlos.myappportfolio.R;
 import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
+import com.carlos.myappportfolio.utils.Utilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -78,8 +75,11 @@ public class MovieAdapter1 extends BaseAdapter {
         String url;
         Response.Movie temp=movieList.get(position);
         url= AppConstants.POSTER_BASE_URL+temp.getPoster_path();
-        Picasso.with(context).load(url).into(holder.myPoster);
-        holder.myTitle.setText(temp.getTitle());
+        Picasso.with(context)
+                .load(url)
+                .into(holder.myPoster);
+        if(temp.getTitle()!=null)
+            holder.myTitle.setText(Utilities.setTypeface(context,temp.getTitle()));
         return row;
     }
 }

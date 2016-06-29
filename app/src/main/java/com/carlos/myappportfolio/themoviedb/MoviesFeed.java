@@ -31,6 +31,7 @@ import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
 import com.carlos.myappportfolio.utils.Message;
 import com.carlos.myappportfolio.utils.TimeMeasure;
+import com.carlos.myappportfolio.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,21 @@ public class MoviesFeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themoviedb_main);
         Toolbar toolbar= (Toolbar)findViewById(R.id.toolBar);
+        SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
+
+        String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
+        String title=null;
+        if (orderStr.equals(getString(R.string.pref_popularity))){
+             title=getString(R.string.mainactivity_title_popularity);
+        }
+        if (orderStr.equals(getString(R.string.pref_rate))){
+             title=getString(R.string.mainactivity_title_rate);
+        }
+        if (orderStr.equals(getString(R.string.pref_favorites))) {
+            //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
+             title=getString(R.string.mainactivity_title_favorites);
+        }
+        toolbar.setTitle(Utilities.setTypeface(this,title));
         setSupportActionBar(toolbar);
         if(findViewById(R.id.detail_activity_container)!=null) {
         //Register to receive message from DetailActivity
@@ -219,8 +235,13 @@ public class MoviesFeed extends AppCompatActivity {
                 intent.putExtra("movieId", mListMovies.get(position).getId());
                 mFromDetailsActivity = true;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                    getActivity().startActivity(intent,bundle);
+                 //   Code for exit transition
+                 //   Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                 //   getActivity().startActivity(intent,bundle);
+                    // Code for shared element transition
+                    ActivityOptions activityOptions=ActivityOptions.
+                            makeSceneTransitionAnimation(getActivity(),view,"imgRow");
+                    getActivity().startActivity(intent,activityOptions.toBundle());
                 } else {
                     startActivity(intent);
                 }
@@ -235,17 +256,13 @@ public class MoviesFeed extends AppCompatActivity {
                     getString(R.string.pref_order_default));
             mFavoritesMode=false;
             if (orderStr.equals(getString(R.string.pref_popularity))){
-                getActivity().setTitle(getString(R.string.mainactivity_title_popularity));
                 getMoviesByPopularity();
-
             }
             if (orderStr.equals(getString(R.string.pref_rate))){
-                getActivity().setTitle(getString(R.string.mainactivity_title_rate));
                 getMoviesByRate();
             }
             if (orderStr.equals(getString(R.string.pref_favorites))) {
-                getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
-                mFavoritesMode=true;
+                  mFavoritesMode=true;
                 getFavoritesMovies();
             }
         }
