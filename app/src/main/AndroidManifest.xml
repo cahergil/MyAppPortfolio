@@ -10,19 +10,16 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".themoviedb.MoviesFeed"
             android:label="@string/app_name"
-            android:theme="@style/InitialScreenTheme">
+            android:theme="@style/AppTheme.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".themoviedb.MoviesFeed"
-            android:label="Movies Feed"
-            android:theme="@style/AppTheme.Home"></activity>
+
         <activity
             android:name=".themoviedb.DetailActivity"
             android:label="@string/title_activity_detail"
@@ -43,20 +40,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".themoviedb.MoviesFeed"></meta-data>
         </activity>
-        <activity
-            android:name=".themoviedb.ReviewsDetail"
-            android:label="@string/title_activity_reviews_detail"
-            android:parentActivityName=".themoviedb.DetailActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.carlos.myappportfolio.themoviedb.DetailActivity" />
-        </activity>
 
-        <provider
-            android:name=".themoviedb.provider.MoviesProvider"
-            android:authorities="com.carlos.myappportfolio.themoviedb.provider">
 
-        </provider>
     </application>
 
 </manifest>

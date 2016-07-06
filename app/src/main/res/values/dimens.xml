@@ -29,11 +29,7 @@
     <dimen name="trailer_img_width">24dp</dimen>
     <dimen name="trailer_text_marginTop">3dp</dimen>
     <dimen name="trailer_text_paddingLeft">30dp</dimen>
-    <!-- Dimensions row_review.xml. -->
-    <dimen name="review_img_height">24dp</dimen>
-    <dimen name="review_img_width">24dp</dimen>
-    <dimen name="review_text_marginTop">4dp</dimen>
-    <dimen name="review_text_paddingLeft">30dp</dimen>
+
 
 
 </resources>

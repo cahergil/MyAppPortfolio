@@ -8,4 +8,5 @@ public interface AppConstants {
     public static final String POSTER_BASE_URL="http://image.tmdb.org/t/p/w185/";
     public static final String POSTER_HQ_BASE_URL="http://image.tmdb.org/t/p/w342/";
     public static final String YOURTUBE_BASE_URL="http://www.youtube.com/watch?v=";
+    public static final String YOUTUBE_IMAGE_BASE_URL="http://img.youtube.com/vi/%1$s/mqdefault.jpg";
 }

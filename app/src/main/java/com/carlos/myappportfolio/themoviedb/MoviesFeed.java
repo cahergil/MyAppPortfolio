@@ -25,7 +25,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter1;
+import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
 import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
 import com.carlos.myappportfolio.themoviedb.models.Response;
 import com.carlos.myappportfolio.utils.AppConstants;
@@ -66,19 +66,19 @@ public class MoviesFeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themoviedb_main);
         Toolbar toolbar= (Toolbar)findViewById(R.id.toolBar);
-        SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
 
+        SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
         String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
         String title=null;
-        if (orderStr.equals(getString(R.string.pref_popularity))){
-             title=getString(R.string.mainactivity_title_popularity);
-        }
-        if (orderStr.equals(getString(R.string.pref_rate))){
+        if (orderStr.equals(getString(R.string.pref_popularity))) {
+            title = getString(R.string.mainactivity_title_popularity);
+        } else if (orderStr.equals(getString(R.string.pref_rate))){
              title=getString(R.string.mainactivity_title_rate);
-        }
-        if (orderStr.equals(getString(R.string.pref_favorites))) {
+        } else if (orderStr.equals(getString(R.string.pref_favorites))) {
             //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
              title=getString(R.string.mainactivity_title_favorites);
+        } else {
+            title="Popular Movies";
         }
         toolbar.setTitle(Utilities.setTypeface(this,title));
         setSupportActionBar(toolbar);
@@ -134,7 +134,7 @@ public class MoviesFeed extends AppCompatActivity {
 
 
         private  GridView mGridView;
-        private  MovieAdapter1 mMovieAdapter;
+        private MovieAdapter mMovieAdapter;
         private  ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
         private  TimeMeasure mTm;
         private  boolean mFromDetailsActivity =false;
@@ -160,7 +160,7 @@ public class MoviesFeed extends AppCompatActivity {
 
             mGridView= (GridView) view.findViewById(R.id.gridView);
             mGridView.setOnItemClickListener(this);
-            mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
+            mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
             if(savedInstanceState!=null){
                 mUserRotation=true;
@@ -168,7 +168,7 @@ public class MoviesFeed extends AppCompatActivity {
                 tempList=savedInstanceState.getParcelableArrayList("mListMovies");
                 mListMovies.clear();
                 mListMovies.addAll(tempList);
-                mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
+                mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                 mGridView.setAdapter(mMovieAdapter);
             }
            return view;
@@ -290,7 +290,7 @@ public class MoviesFeed extends AppCompatActivity {
 
                     mListMovies.clear();
                     mListMovies.addAll((ArrayList) response.getResults());
-                    mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
+                    mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
                     mGridView.setAdapter(mMovieAdapter);
                   //  GridviewSelection selection=new GridviewSelection();
                  //   selection.delete(getActivity().getContentResolver());
@@ -319,12 +319,13 @@ public class MoviesFeed extends AppCompatActivity {
                     tempMovie = new Response.Movie();
                     tempMovie.setId(movieDetail.getId());
                     tempMovie.setPoster_path(movieDetail.getPoster_path());
+                    tempMovie.setTitle(movieDetail.getTitle());
                     tempList.add(tempMovie);
                 }
                 mListMovies.clear();
                 mListMovies.addAll(tempList);
             }
-            mMovieAdapter = new MovieAdapter1(getActivity(), mListMovies);
+            mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
             mGridView.setAdapter(mMovieAdapter);
             mProgressDialog.dismiss();
 

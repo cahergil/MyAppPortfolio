@@ -3,6 +3,7 @@ package com.carlos.myappportfolio.themoviedb;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -66,6 +67,8 @@ public class DetailActivityFragment extends Fragment {
     private boolean mMovieInFavorites;
     private MovieImages mMovieImages;
 
+
+
     public DetailActivityFragment() {
     }
 
@@ -93,7 +96,7 @@ public class DetailActivityFragment extends Fragment {
         mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
         mCollapsingToolbarLayout.setExpandedTitleTypeface(typeface);
         mCollapsingToolbarLayout.setCollapsedTitleTypeface(typeface);
-        //  mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+
 
         //for transition listener
         mScrollView = (ScrollView) view.findViewById(R.id.svMain);
@@ -155,34 +158,6 @@ public class DetailActivityFragment extends Fragment {
                 }
             }
         });
-
-        //Trailers
-
-
-
-//        mListViewTrailers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent;
-//                String buildUrl;
-//                mSharedPreferenceManager.setFromDetailsScreen(true);
-//                buildUrl = AppConstants.YOURTUBE_BASE_URL + mlistTrailers.get(position).getSource();
-//                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
-//                startActivity(intent);
-//            }
-//        });
-
-        //Reviews
-
-//        mListViewReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                mSharedPreferenceManager.setFromDetailsScreen(true);
-//                Intent intent = new Intent(getActivity(), ReviewsDetail.class);
-//                intent.putExtra(Intent.EXTRA_TEXT, mlistReviews.get(position).getContent());
-//                startActivity(intent);
-//            }
-//        });
 
 
         if (savedInstanceState != null) {
@@ -271,18 +246,6 @@ public class DetailActivityFragment extends Fragment {
             @Override
             public void success(MovieDetail movieDetail, retrofit.client.Response response) {
                 mMovieDetail = movieDetail;
-//                Trailers trailers = mMovieDetail.getTrailers();
-//                Reviews reviews = mMovieDetail.getReviews();
-//
-//                mlistTrailers.clear();
-//                mlistTrailers.addAll(trailers.getYoutubeTrailers());
-//
-//
-//                mlistReviews.clear();
-//                mlistReviews.addAll(reviews.getListReviews());
-
-
-
                 displayDataOnScreen();
 
             }
@@ -359,8 +322,8 @@ public class DetailActivityFragment extends Fragment {
         mTvReleaseDate.setText(formattedDate);
         mTvRate.setText(mMovieDetail.getVote_average() + "/10" + "(" + mMovieDetail.getVote_count() + " votes)");
         TextView tvSynopsis= (TextView) getView().findViewById(R.id.tvHeaderSynopsis);
-        Typeface typeface=Typeface.createFromAsset(getActivity().getAssets(),"Lobster-Regular.ttf");
-        tvSynopsis.setTypeface(typeface);
+        Typeface myTypeface=Typeface.createFromAsset(getActivity().getAssets(),"Lobster-Regular.ttf");
+        tvSynopsis.setTypeface(myTypeface);
         mTvSynopsis.setText(mMovieDetail.getOverview());
         int drawableId;
         if (mSharedPreferenceManager.isMovieInFavorites(mMovieDetail)) {
@@ -374,10 +337,44 @@ public class DetailActivityFragment extends Fragment {
                 load(drawableId).
                 into(mIvFavorite);
 
+        //trailers
+        TextView tvTrailers= (TextView) getView().findViewById(R.id.txtTrailers);
+        tvTrailers.setTypeface(myTypeface);
+        Trailers trailers=mMovieDetail.getTrailers();
+        List<Trailers.YoutubeEntity> trailersList=trailers.getYoutubeTrailers();
+        LinearLayout trailersLinearLayout= (LinearLayout) getView().findViewById(R.id.llTrailers);
+
+        for (int i = 0; i<trailersList.size();i++) {
+            final Trailers.YoutubeEntity trailer=trailersList.get(i);
+            View v=LayoutInflater.from(getActivity()).inflate(R.layout.trailers,trailersLinearLayout,false);
+            TextView tvTrailerTitle= (TextView) v.findViewById(R.id.trailerTitle);
+            TextView tvTrailerQuality= (TextView) v.findViewById(R.id.other);
+            ImageView IvTrailerContainer= (ImageView) v.findViewById(R.id.trailerContainer);
+            tvTrailerTitle.setText(trailer.getName());
+            tvTrailerQuality.setText(trailer.getSize());
+            String trailerPath=String.format(AppConstants.YOUTUBE_IMAGE_BASE_URL,trailer.getSource());
+            Picasso.with(getActivity())
+                    .load(trailerPath)
+
+                    .into(IvTrailerContainer);
+            IvTrailerContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String buildUrl=AppConstants.YOURTUBE_BASE_URL + trailer.getSource();
+                    Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(buildUrl));
+                    startActivity(intent);
+                }
+            });
+            trailersLinearLayout.addView(v);
+
+
+        }
+
+
         //reviews
         TextView tvReviews= (TextView) getView().findViewById(R.id.txtReviews);
-
-        tvReviews.setTypeface(typeface);
+        tvReviews.setTypeface(myTypeface);
         Reviews reviews=mMovieDetail.getReviews();
         List<Reviews.ResultsEntity> reviewsList=reviews.getListReviews();
 

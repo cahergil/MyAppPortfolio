@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/trailerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Trailer title" />
+
+    <TextView
+        android:id="@+id/other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="quality" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/trailerContainer"
+            android:layout_width="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_height="180dp" />
+        <ImageView
+            android:id="@+id/playButtonThumb"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/play_button" />
+    </RelativeLayout>
+
+</LinearLayout>
