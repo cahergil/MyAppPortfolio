@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.carlos.myappportfolio">
+    package="com.carlos.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".themoviedb.MoviesFeed"
+            android:name="com.carlos.popularmovies.themoviedb.MoviesFeed"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Home">
             <intent-filter>
@@ -21,24 +21,24 @@
         </activity>
 
         <activity
-            android:name=".themoviedb.DetailActivity"
+            android:name="com.carlos.popularmovies.themoviedb.DetailActivity"
             android:label="@string/title_activity_detail"
             android:launchMode="singleTop"
-            android:parentActivityName=".themoviedb.MoviesFeed"
+            android:parentActivityName="com.carlos.popularmovies.themoviedb.MoviesFeed"
             android:theme="@style/AppTheme.Detail"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.carlos.myappportfolio.themoviedb.MoviesFeed" />
+                android:value="com.carlos.popularmovies.themoviedb.MoviesFeed" />
         </activity>
         <activity
-            android:name=".themoviedb.SettingsActivity"
+            android:name="com.carlos.popularmovies.themoviedb.SettingsActivity"
             android:label="@string/title_activity_settings"
 
-            android:parentActivityName=".themoviedb.MoviesFeed">
+            android:parentActivityName="com.carlos.popularmovies.themoviedb.MoviesFeed">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".themoviedb.MoviesFeed"></meta-data>
+                android:value="com.carlos.popularmovies.themoviedb.MoviesFeed"></meta-data>
         </activity>
 
 

@@ -6,7 +6,7 @@
     >
     <fragment
         android:id="@+id/fragment_gridview"
-        android:name="com.carlos.myappportfolio.themoviedb.MoviesFeed$MoviesFeedFragment"
+        android:name="com.carlos.popularmovies.themoviedb.MoviesFeed$MoviesFeedFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"

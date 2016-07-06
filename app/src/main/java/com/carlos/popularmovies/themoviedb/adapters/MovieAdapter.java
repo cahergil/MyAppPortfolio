@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb.adapters;
+package com.carlos.popularmovies.themoviedb.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.models.Response;
-import com.carlos.myappportfolio.utils.AppConstants;
-import com.carlos.myappportfolio.utils.Utilities;
+import com.carlos.popularmovies.R;
+import com.carlos.popularmovies.themoviedb.models.Response;
+import com.carlos.popularmovies.utils.AppConstants;
+import com.carlos.popularmovies.utils.Utilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

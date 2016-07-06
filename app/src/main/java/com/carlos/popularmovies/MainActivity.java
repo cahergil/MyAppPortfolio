@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio;
+package com.carlos.popularmovies;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 
-import com.carlos.myappportfolio.themoviedb.MoviesFeed;
-import com.carlos.myappportfolio.utils.Message;
+import com.carlos.popularmovies.themoviedb.MoviesFeed;
+import com.carlos.popularmovies.utils.Message;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnSpotify,btnScores,btnLibrary,btnBigger,btnReader,btnCapstone;

@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.popularmovies.themoviedb;
 
 
 import android.graphics.PorterDuff;
@@ -13,8 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.utils.Utilities;
+import com.carlos.popularmovies.R;
+import com.carlos.popularmovies.utils.Utilities;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.

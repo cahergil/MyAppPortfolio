@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
 
-            tools:context="com.carlos.myappportfolio.themoviedb.DetailActivityFragment">
+            tools:context="com.carlos.popularmovies.themoviedb.DetailActivityFragment">
 
 
             <LinearLayout

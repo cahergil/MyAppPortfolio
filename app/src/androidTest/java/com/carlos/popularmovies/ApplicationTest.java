@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio;
+package com.carlos.popularmovies;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

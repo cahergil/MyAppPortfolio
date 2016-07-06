@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.popularmovies.themoviedb;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 
-import com.carlos.myappportfolio.R;
+import com.carlos.popularmovies.R;
 
 
 public class DetailActivity extends AppCompatActivity {

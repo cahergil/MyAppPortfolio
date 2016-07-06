@@ -11,11 +11,7 @@
         android:layout_height="wrap_content"
         tools:text="Trailer title" />
 
-    <TextView
-        android:id="@+id/other"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="quality" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

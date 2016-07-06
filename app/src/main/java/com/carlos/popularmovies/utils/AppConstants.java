@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.utils;
+package com.carlos.popularmovies.utils;
 
 /**
  * Created by Carlos on 25/08/2015.

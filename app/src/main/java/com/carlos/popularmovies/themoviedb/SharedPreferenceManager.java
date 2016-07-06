@@ -1,9 +1,9 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.popularmovies.themoviedb;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
+import com.carlos.popularmovies.themoviedb.models.MovieDetail;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

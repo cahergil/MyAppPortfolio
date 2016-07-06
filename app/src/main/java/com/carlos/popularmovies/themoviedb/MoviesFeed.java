@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.popularmovies.themoviedb;
 
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
@@ -24,14 +24,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.adapters.MovieAdapter;
-import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
-import com.carlos.myappportfolio.themoviedb.models.Response;
-import com.carlos.myappportfolio.utils.AppConstants;
-import com.carlos.myappportfolio.utils.Message;
-import com.carlos.myappportfolio.utils.TimeMeasure;
-import com.carlos.myappportfolio.utils.Utilities;
+import com.carlos.popularmovies.R;
+import com.carlos.popularmovies.themoviedb.adapters.MovieAdapter;
+import com.carlos.popularmovies.themoviedb.models.MovieDetail;
+import com.carlos.popularmovies.themoviedb.models.Response;
+import com.carlos.popularmovies.utils.AppConstants;
+import com.carlos.popularmovies.utils.Message;
+import com.carlos.popularmovies.utils.TimeMeasure;
+import com.carlos.popularmovies.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;

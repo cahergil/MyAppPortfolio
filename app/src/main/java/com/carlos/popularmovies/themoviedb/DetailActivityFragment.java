@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb;
+package com.carlos.popularmovies.themoviedb;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -21,13 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.carlos.myappportfolio.R;
-import com.carlos.myappportfolio.themoviedb.models.MovieDetail;
-import com.carlos.myappportfolio.themoviedb.models.MovieImages;
-import com.carlos.myappportfolio.themoviedb.models.Reviews;
-import com.carlos.myappportfolio.themoviedb.models.Trailers;
-import com.carlos.myappportfolio.utils.AppConstants;
-import com.carlos.myappportfolio.utils.Utilities;
+import com.carlos.popularmovies.R;
+import com.carlos.popularmovies.themoviedb.models.MovieDetail;
+import com.carlos.popularmovies.themoviedb.models.MovieImages;
+import com.carlos.popularmovies.themoviedb.models.Reviews;
+import com.carlos.popularmovies.themoviedb.models.Trailers;
+import com.carlos.popularmovies.utils.AppConstants;
+import com.carlos.popularmovies.utils.Utilities;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -348,14 +348,11 @@ public class DetailActivityFragment extends Fragment {
             final Trailers.YoutubeEntity trailer=trailersList.get(i);
             View v=LayoutInflater.from(getActivity()).inflate(R.layout.trailers,trailersLinearLayout,false);
             TextView tvTrailerTitle= (TextView) v.findViewById(R.id.trailerTitle);
-            TextView tvTrailerQuality= (TextView) v.findViewById(R.id.other);
             ImageView IvTrailerContainer= (ImageView) v.findViewById(R.id.trailerContainer);
             tvTrailerTitle.setText(trailer.getName());
-            tvTrailerQuality.setText(trailer.getSize());
             String trailerPath=String.format(AppConstants.YOUTUBE_IMAGE_BASE_URL,trailer.getSource());
             Picasso.with(getActivity())
                     .load(trailerPath)
-
                     .into(IvTrailerContainer);
             IvTrailerContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

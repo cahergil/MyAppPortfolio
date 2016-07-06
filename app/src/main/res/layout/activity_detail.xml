@@ -3,6 +3,6 @@
     android:id="@+id/detail_activity_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.carlos.myappportfolio.themoviedb.DetailActivity"
+    tools:context="com.carlos.popularmovies.themoviedb.DetailActivity"
     tools:ignore="MergeRootFrame"
      />

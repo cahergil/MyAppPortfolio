@@ -1,4 +1,4 @@
-package com.carlos.myappportfolio.themoviedb.models;
+package com.carlos.popularmovies.themoviedb.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

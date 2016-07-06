@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0 rc2"
 
     defaultConfig {
-        applicationId "com.carlos.myappportfolio"
+        applicationId "com.carlos.popularmovies"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
