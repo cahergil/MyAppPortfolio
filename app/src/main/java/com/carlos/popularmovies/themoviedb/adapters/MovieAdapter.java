@@ -77,6 +77,8 @@ public class MovieAdapter extends BaseAdapter {
         url= AppConstants.POSTER_BASE_URL+temp.getPoster_path();
         Picasso.with(context)
                 .load(url)
+                .centerCrop()
+                .resize((int)Utilities.convertDpToPixel((float)170,context),(int)Utilities.convertDpToPixel((float)260,context))
                 .into(holder.myPoster);
         if(temp.getTitle()!=null)
             holder.myTitle.setText(Utilities.setTypeface(context,temp.getTitle()));
