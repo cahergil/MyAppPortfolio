@@ -9,22 +9,21 @@ The purpose of this project was to built an app, optimized for tablets, to help 
 
 This app is the first and second project in Udacity's Android Developer Nanodegree. 
 
-	**1. Popular Movies Stage 1 requirements:**
-					1. Present the user with a grid arrangement of movie posters upon launch.
-					2. Allow your user to change sort order via a setting:
-					3. The sort order can be by most popular or by highest-rated
-					4. Allow the user to tap on a movie poster and transition to a details screen with additional information such as:
-					    * *original title.*
-					    * *movie poster image thumbnail.*
-						* *a plot synopsis.* 
-						* *user rating.* 
-						* *release date.*
-
-	**2. Popular Movies Stage 2 requirements:**	
-					1. Allow users to view and play trailers ( either in the youtube app or a web browser).
-					2. Allow users to read reviews of a selected movie.
-					3. Allow users to mark a movie as a favorite in the details view by tapping a button(star). This is for a local    movies collection that you will maintain and does not require an API request*.
-					4. Modify the existing sorting criteria for the main view to include an additional pivot to show their favorites collection.				
+1. **Popular Movies Stage 1 requirements:**
+  1. Present the user with a grid arrangement of movie posters upon launch.
+  2. Allow your user to change sort order via a setting:
+  3. The sort order can be by most popular or by highest-rated
+  4. Allow the user to tap on a movie poster and transition to a details screen with additional information such as:
+    * *original title.*
+    * *movie poster image thumbnail.*
+    * *a plot synopsis.* 
+    * *user rating.* 
+    * *release date.*
+2. **Popular Movies Stage 2 requirements:**	
+  1. Allow users to view and play trailers ( either in the youtube app or a web browser).
+  2. Allow users to read reviews of a selected movie.
+  3. Allow users to mark a movie as a favorite in the details view by tapping a button(star). This is for a local    movies collection that you will maintain and does not require an API request*.
+  4. Modify the existing sorting criteria for the main view to include an additional pivot to show their favorites collection.				
 
 
 
