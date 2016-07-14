@@ -115,7 +115,9 @@ public class DetailActivityFragment extends Fragment {
 
             }
         });
-
+        if(mTwoPaneMode) {
+            toolbar.setVisibility(Toolbar.INVISIBLE);
+        }
         mIvFavorite = (ImageView) view.findViewById(R.id.btnFavorite);
         mIvFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
