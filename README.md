@@ -5,7 +5,7 @@ The purpose of this project was to built an app, optimized for tablets, to help 
  ![grid](https://raw.githubusercontent.com/cahegi/MyAppPortfolio/master/art/phone_grid1.png) 
  ![details](https://raw.githubusercontent.com/cahegi/MyAppPortfolio/master/art/phone_details1.png) 
 
- ![tablet](https://raw.githubusercontent.com/cahegi/MyAppPortfolio/master/art/tablt.png) 
+ ![tablet](https://raw.githubusercontent.com/cahegi/MyAppPortfolio/master/art/tablet.png) 
 
 ### Features
 
