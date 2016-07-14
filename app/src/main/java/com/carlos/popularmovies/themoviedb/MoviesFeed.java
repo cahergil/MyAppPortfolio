@@ -65,7 +65,23 @@ public class MoviesFeed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.themoviedb_main);
+        Toolbar toolbar= (Toolbar)findViewById(R.id.toolBar);
 
+        SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
+        String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
+        String title=null;
+        if (orderStr.equals(getString(R.string.pref_popularity))) {
+            title = getString(R.string.mainactivity_title_popularity);
+        } else if (orderStr.equals(getString(R.string.pref_rate))){
+            title=getString(R.string.mainactivity_title_rate);
+        } else if (orderStr.equals(getString(R.string.pref_favorites))) {
+            //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
+            title=getString(R.string.mainactivity_title_favorites);
+        } else {
+            title="Popular Movies";
+        }
+        toolbar.setTitle(Utilities.setTypeface(this,title));
+        setSupportActionBar(toolbar);
         if(findViewById(R.id.detail_activity_container)!=null) {
         //Register to receive message from DetailActivity
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -78,23 +94,7 @@ public class MoviesFeed extends AppCompatActivity {
             // or replacing the detail fragment using a fragment transaction
 
         } else {
-            Toolbar toolbar= (Toolbar)findViewById(R.id.toolBar);
 
-            SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(this);
-            String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
-            String title=null;
-            if (orderStr.equals(getString(R.string.pref_popularity))) {
-                title = getString(R.string.mainactivity_title_popularity);
-            } else if (orderStr.equals(getString(R.string.pref_rate))){
-                title=getString(R.string.mainactivity_title_rate);
-            } else if (orderStr.equals(getString(R.string.pref_favorites))) {
-                //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
-                title=getString(R.string.mainactivity_title_favorites);
-            } else {
-                title="Popular Movies";
-            }
-            toolbar.setTitle(Utilities.setTypeface(this,title));
-            setSupportActionBar(toolbar);
             mTwoPane=false;
         }
     }
@@ -297,6 +297,18 @@ public class MoviesFeed extends AppCompatActivity {
                  //   selection.delete(getActivity().getContentResolver());
 
                      mProgressDialog.dismiss();
+                    if (mTwoPane==true) {
+                        DetailActivityFragment detailActivityFragment = new DetailActivityFragment();
+                        Bundle args = new Bundle();
+                        args.putString("movieId", String.valueOf(mListMovies.get(0).getId()));
+                        args.putBoolean("favoritesMode", mFavoritesMode);
+                        args.putBoolean("twoPaneMode", mTwoPane);
+                        args.putString("customFrag", CUSTOM_FRAG);
+                        detailActivityFragment.setArguments(args);
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.detail_activity_container, detailActivityFragment, CUSTOM_FRAG)
+                                .commit();
+                    }
 
                 }
 
