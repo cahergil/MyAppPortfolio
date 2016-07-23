@@ -22,10 +22,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.carlos.popularmovies.R;
-import com.carlos.popularmovies.themoviedb.models.MovieDetail;
-import com.carlos.popularmovies.themoviedb.models.MovieImages;
-import com.carlos.popularmovies.themoviedb.models.Reviews;
-import com.carlos.popularmovies.themoviedb.models.Trailers;
+import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
+import com.carlos.popularmovies.themoviedb.api.model.MovieImages;
+import com.carlos.popularmovies.themoviedb.api.model.Reviews;
+import com.carlos.popularmovies.themoviedb.api.model.Trailers;
 import com.carlos.popularmovies.utils.AppConstants;
 import com.carlos.popularmovies.utils.Utilities;
 import com.squareup.picasso.Picasso;

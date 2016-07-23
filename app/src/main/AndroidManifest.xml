@@ -6,11 +6,12 @@
 
     <application
         android:allowBackup="true"
+        android:name=".themoviedb.api.client.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.carlos.popularmovies.themoviedb.MoviesFeed"
+            android:name="com.carlos.popularmovies.themoviedb.ui.activity.MoviesActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Home">
             <intent-filter>
@@ -35,10 +36,11 @@
             android:name="com.carlos.popularmovies.themoviedb.SettingsActivity"
             android:label="@string/title_activity_settings"
 
-            android:parentActivityName="com.carlos.popularmovies.themoviedb.MoviesFeed">
+            android:parentActivityName="com.carlos.popularmovies.themoviedb.ui.activity.MoviesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.carlos.popularmovies.themoviedb.MoviesFeed"></meta-data>
+                android:value="com.carlos.popularmovies.themoviedb.ui.activity.MoviesActivity">
+            </meta-data>
         </activity>
 
 

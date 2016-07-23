@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.carlos.popularmovies.R;
-import com.carlos.popularmovies.themoviedb.models.Response;
+import com.carlos.popularmovies.themoviedb.api.model.Response;
 import com.carlos.popularmovies.utils.AppConstants;
 import com.carlos.popularmovies.utils.Utilities;
 import com.squareup.picasso.Picasso;

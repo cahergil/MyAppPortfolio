@@ -1,8 +1,8 @@
 package com.carlos.popularmovies.themoviedb;
 
-import com.carlos.popularmovies.themoviedb.models.MovieDetail;
-import com.carlos.popularmovies.themoviedb.models.MovieImages;
-import com.carlos.popularmovies.themoviedb.models.Response;
+import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
+import com.carlos.popularmovies.themoviedb.api.model.MovieImages;
+import com.carlos.popularmovies.themoviedb.api.model.Response;
 
 import retrofit.RestAdapter;
 import retrofit.http.GET;

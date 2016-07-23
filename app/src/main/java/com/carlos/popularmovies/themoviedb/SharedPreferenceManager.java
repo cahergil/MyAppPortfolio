@@ -3,7 +3,7 @@ package com.carlos.popularmovies.themoviedb;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.carlos.popularmovies.themoviedb.models.MovieDetail;
+import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
