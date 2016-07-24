@@ -22,15 +22,15 @@
         </activity>
 
         <activity
-            android:name="com.carlos.popularmovies.themoviedb.DetailActivity"
+            android:name="com.carlos.popularmovies.themoviedb.ui.activity.DetailActivity"
             android:label="@string/title_activity_detail"
             android:launchMode="singleTop"
-            android:parentActivityName="com.carlos.popularmovies.themoviedb.MoviesFeed"
+            android:parentActivityName="com.carlos.popularmovies.themoviedb.ui.activity.MoviesActivity"
             android:theme="@style/AppTheme.Detail"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.carlos.popularmovies.themoviedb.MoviesFeed" />
+                android:value="com.carlos.popularmovies.themoviedb.ui.activity.MoviesActivity" />
         </activity>
         <activity
             android:name="com.carlos.popularmovies.themoviedb.SettingsActivity"

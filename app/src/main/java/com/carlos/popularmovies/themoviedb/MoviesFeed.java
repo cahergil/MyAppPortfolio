@@ -25,7 +25,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.carlos.popularmovies.R;
-import com.carlos.popularmovies.themoviedb.adapters.MovieAdapter;
+import com.carlos.popularmovies.themoviedb.ui.adapter.MovieAdapter;
 import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
 import com.carlos.popularmovies.themoviedb.api.model.Response;
 import com.carlos.popularmovies.utils.AppConstants;

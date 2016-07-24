@@ -1,13 +1,16 @@
 package com.carlos.popularmovies.themoviedb.model;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.carlos.popularmovies.themoviedb.SharedPreferenceManager;
 import com.carlos.popularmovies.themoviedb.api.client.Constants;
 import com.carlos.popularmovies.themoviedb.api.client.MyApplication;
 import com.carlos.popularmovies.themoviedb.api.client.TheMovieDbService;
+import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
 import com.carlos.popularmovies.themoviedb.api.model.Response;
-import com.carlos.popularmovies.themoviedb.presenter.MoviesPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -18,29 +21,53 @@ import retrofit.RetrofitError;
  */
 public class MoviesInteractor {
 
-    TheMovieDbService mTheMovieDbService;
-    MyApplication myApplication;
+    private static final String LOG_TAG = MoviesInteractor.class.getSimpleName();
+    private TheMovieDbService mTheMovieDbService;
+    private MyApplication myApplication;
+    private Context context;
 
     public MoviesInteractor(Context context) {
-        this.myApplication=MyApplication.get(context);
-        mTheMovieDbService=myApplication.getmTheMovieDbService();
+        this.myApplication = MyApplication.get(context);
+        mTheMovieDbService = myApplication.getmTheMovieDbService();
+        this.context=context;
+    }
+
+    public void getMoviesByPopularity(MoviesCallback callback) {
+        mTheMovieDbService.getMoviesByPopularityDesc(Constants.API_KEY, retrofitCallback(callback));
+    }
+
+    public void getMoviesByRate(MoviesCallback callback) {
+        mTheMovieDbService.getMoviesByAverageRate(Constants.API_KEY, retrofitCallback(callback));
+    }
+
+    public void getFavoriteMovies(MoviesCallback callback){
+        List<MovieDetail> tempListDetail;
+        ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
+        SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(context);
+        tempListDetail = sharedPreferenceManager.getFavoritesList();
+        Response.Movie tempMovie;
+        if (tempListDetail!=null) {
+            for (MovieDetail movieDetail : tempListDetail) {
+                tempMovie = new Response.Movie();
+                tempMovie.setId(movieDetail.getId());
+                tempMovie.setPoster_path(movieDetail.getPoster_path());
+                tempMovie.setTitle(movieDetail.getTitle());
+                tempList.add(tempMovie);
+            }
+            callback.onResponse(tempList);
+            return;
+        }
+        callback.onResponse(new ArrayList<Response.Movie>());
 
     }
 
-    public void getMoviesByPopularity(InteractorCallback callback) {
-        mTheMovieDbService.getMoviesByPopularityDesc(Constants.API_KEY,retrofitCallback(callback));
-    }
-    public void getMoviesByRate(InteractorCallback callback){
-        mTheMovieDbService.getMoviesByAverageRate(Constants.API_KEY,retrofitCallback(callback));
-    }
-
-    public Callback retrofitCallback(final InteractorCallback callback){
+    public Callback retrofitCallback(final MoviesCallback callback) {
         return new Callback() {
             @Override
             public void success(Object o, retrofit.client.Response response) {
-                if(o instanceof Response) {
-                    Response resp=(Response)o;
-                    List<Response.Movie> moviesList=resp.getResults();
+                if (o instanceof Response) {
+                    Response resp = (Response) o;
+                    List<Response.Movie> moviesList = resp.getResults();
                     callback.onResponse(moviesList);
                 }
 
@@ -48,9 +75,16 @@ public class MoviesInteractor {
 
             @Override
             public void failure(RetrofitError error) {
+                String err = error.getMessage();
+                Log.d(LOG_TAG, "error:" + err);
+                callback.onServerError(err);
 
             }
+
+
         };
+
+
     }
 
 

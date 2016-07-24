@@ -7,14 +7,16 @@ import java.util.List;
 /**
  * Created by Carlos on 22/07/2016.
  */
-public interface InteractorCallback {
-    void onResponse(List<Response.Movie> artists);
+public interface MoviesCallback {
+    void onResponse(List<Response.Movie> movieList);
 
     void onArtistNotFound();
 
     void onNetworkConnectionError();
 
-    void onServerError();
+    void onServerError(String error);
+
+
 }
 
 

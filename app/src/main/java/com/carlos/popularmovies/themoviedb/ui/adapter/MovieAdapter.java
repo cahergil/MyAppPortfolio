@@ -1,4 +1,4 @@
-package com.carlos.popularmovies.themoviedb.adapters;
+package com.carlos.popularmovies.themoviedb.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

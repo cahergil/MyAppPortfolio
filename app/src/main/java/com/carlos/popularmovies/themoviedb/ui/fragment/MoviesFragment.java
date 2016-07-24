@@ -1,8 +1,10 @@
 package com.carlos.popularmovies.themoviedb.ui.fragment;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -17,10 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.carlos.popularmovies.R;
 import com.carlos.popularmovies.themoviedb.SettingsActivity;
-import com.carlos.popularmovies.themoviedb.adapters.MovieAdapter;
+import com.carlos.popularmovies.themoviedb.ui.activity.DetailActivity;
+import com.carlos.popularmovies.themoviedb.ui.adapter.MovieAdapter;
 import com.carlos.popularmovies.themoviedb.api.client.Constants;
 import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
 import com.carlos.popularmovies.themoviedb.api.model.Response;
@@ -48,7 +52,8 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
     private MovieAdapter mMovieAdapter;
     private ArrayList<Response.Movie> mListMovies=new ArrayList<Response.Movie>();
     private ProgressDialog mProgressDialog;
-    private boolean mRotation=false;
+    private boolean mRotation;
+    private boolean mFavorite;
 
 
 
@@ -79,39 +84,24 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
         setUpGridView();
         if(savedInstanceState!=null) {
             mRotation=true;
+            ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
+            tempList=savedInstanceState.getParcelableArrayList("mListMovies");
+            mListMovies.clear();
+            mListMovies.addAll(tempList);
+            mMovieAdapter = new MovieAdapter(getActivity(), mListMovies);
+            mGridView.setAdapter(mMovieAdapter);
         }
 
     }
 
-    public void setUpToolBar(){
-        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
-        String title=null;
-        if (orderStr.equals(getString(R.string.pref_popularity))) {
-            title = getString(R.string.mainactivity_title_popularity);
-        } else if (orderStr.equals(getString(R.string.pref_rate))){
-            title=getString(R.string.mainactivity_title_rate);
-        } else if (orderStr.equals(getString(R.string.pref_favorites))) {
-            //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
-            title=getString(R.string.mainactivity_title_favorites);
-        } else {
-            title="Popular Movies";
-        }
-        mToolbar.setTitle(Utilities.setTypeface(getActivity(),title));
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("mListMovies", mListMovies);
+
     }
-
-    public void setUpGridView(){
-        mMovieAdapter=new MovieAdapter(getActivity(),mListMovies);
-        mGridView.setAdapter(mMovieAdapter);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -136,9 +126,59 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
     public void onResume() {
         super.onResume();
         if (mRotation!=true) {
-            executeCallToMoviesApi();
+            if(!mFavorite) {
+                executeCallToMoviesApi();
+            } else {
+                mMoviesPresenter.onLoadFavorites();
+            }
         }
         mRotation=false;
+    }
+
+    public void setUpToolBar(){
+        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String orderStr=sp.getString(getString(R.string.pref_order_key),"movies");
+        String title=null;
+        if (orderStr.equals(getString(R.string.pref_popularity))) {
+            title = getString(R.string.mainactivity_title_popularity);
+        } else if (orderStr.equals(getString(R.string.pref_rate))){
+            title=getString(R.string.mainactivity_title_rate);
+        } else if (orderStr.equals(getString(R.string.pref_favorites))) {
+            mFavorite=true;
+            //   getActivity().setTitle(getString(R.string.mainactivity_title_favorites));
+            title=getString(R.string.mainactivity_title_favorites);
+        } else {
+            title="Popular Movies";
+        }
+        mToolbar.setTitle(Utilities.setTypeface(getActivity(),title));
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+    }
+
+    public void setUpGridView(){
+        mMovieAdapter=new MovieAdapter(getActivity(),mListMovies);
+        mGridView.setAdapter(mMovieAdapter);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!getResources().getBoolean(R.bool.isTablet)) {
+
+                    String movieId = String.valueOf(mListMovies.get(position).getId());
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("movieId", movieId);
+                    intent.putExtras(bundle);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions activityOptions = ActivityOptions.
+                                makeSceneTransitionAnimation(getActivity(), view, "imgRow");
+                        getActivity().startActivity(intent, activityOptions.toBundle());
+                    } else {
+                        startActivity(intent);
+                    }
+                }
+
+            }
+        });
     }
 
     public void executeCallToMoviesApi(){
@@ -159,6 +199,7 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
 
     }
 
+
     @Override
     public void showLoading() {
         mProgressDialog=ProgressDialog.show(getActivity(),"","Loading data",true);
@@ -175,8 +216,8 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
     }
 
     @Override
-    public void showServerError() {
-
+    public void showServerError(String error) {
+        Toast.makeText(getActivity(),error,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -190,8 +231,7 @@ public class MoviesFragment extends Fragment implements MoviesMvpView {
 
     }
 
-    @Override
-    public void launchMovieDetail(MovieDetail movie) {
 
-    }
+
+
 }

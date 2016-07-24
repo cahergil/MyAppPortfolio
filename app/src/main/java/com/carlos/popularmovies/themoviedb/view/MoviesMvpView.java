@@ -1,5 +1,7 @@
 package com.carlos.popularmovies.themoviedb.view;
 
+import android.view.View;
+
 import com.carlos.popularmovies.themoviedb.api.model.MovieDetail;
 import com.carlos.popularmovies.themoviedb.api.model.Response;
 
@@ -16,8 +18,9 @@ public interface MoviesMvpView extends MvpView{
 
     void showConnectionErrorMessage();
 
-    void showServerError();
+    void showServerError(String error);
 
     void renderMovies(List<Response.Movie> list);
-    void launchMovieDetail(MovieDetail movie);
+
+
 }
