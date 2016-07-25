@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,14 +80,29 @@ public class DetailsPresenter implements Presenter<DetailsMvpView>,DetailsCallba
             mMovieInFavorite=true;
             mDetailsMvpView.showInFavorite(v);
         } else {
+
             tempList= mSharedPreferenceManager.getFavoritesList();
             tempList.remove(movieDetail);
             mSharedPreferenceManager.saveFavoritesList(tempList);
             mMovieInFavorite=false;
             mDetailsMvpView.showOutFavorite(v);
+            if(mContext.getResources().getBoolean(R.bool.isTablet) && mSharedPreferenceManager.isFavoriteMode()) {
+                sendBundleBroadcast((ArrayList<MovieDetail>)tempList);
+            }
         }
 
 
+
+    }
+
+    public void sendBundleBroadcast(ArrayList<MovieDetail> list) {
+
+        Intent intent = new Intent("favorites");
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("favoritesList",list);
+        intent.putExtras(bundle);
+
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
     public Typeface getLobsterRegularTypeface(){
         return myTypeface;

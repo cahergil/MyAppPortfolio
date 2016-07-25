@@ -22,5 +22,6 @@ public interface MoviesMvpView extends MvpView{
 
     void renderMovies(List<Response.Movie> list);
 
+    void removeDetailFragment();
 
 }

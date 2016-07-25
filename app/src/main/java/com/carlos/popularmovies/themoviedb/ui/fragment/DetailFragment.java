@@ -112,9 +112,11 @@ public class DetailFragment extends Fragment implements DetailsMvpView {
         if (savedInstanceState == null) {
             Bundle bundle = getArguments();
             mMovieId = bundle.getString("movieId");
+            mDetailsPresenter.onSearchMovieDetails(mMovieId);
+
 
         } else {
-            mUserRotate = true;
+
             mMovieDetail = savedInstanceState.getParcelable("movieDetails");
             ArrayList<Reviews.ResultsEntity> listReviewsTemp;
             listReviewsTemp = savedInstanceState.getParcelableArrayList("reviewsList");
@@ -123,19 +125,15 @@ public class DetailFragment extends Fragment implements DetailsMvpView {
             ArrayList<Trailers.YoutubeEntity> listTrailersTemp;
             listTrailersTemp = savedInstanceState.getParcelableArrayList("trailerList");
             mlistTrailers.addAll(listTrailersTemp);
+            displayDataOnScreen(mMovieDetail);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mUserRotate != true) {
-            mDetailsPresenter.onSearchMovieDetails(mMovieId);
 
-        } else {
-            displayDataOnScreen(mMovieDetail);
-        }
-        mUserRotate = false;
+
     }
 
     @Override
@@ -149,6 +147,9 @@ public class DetailFragment extends Fragment implements DetailsMvpView {
     }
 
     public void setUpToolbar() {
+        if(getResources().getBoolean(R.bool.isTablet)) {
+            mToolbar.setVisibility(Toolbar.INVISIBLE);
+        }
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

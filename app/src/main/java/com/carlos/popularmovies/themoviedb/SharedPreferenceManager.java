@@ -32,6 +32,15 @@ public class SharedPreferenceManager {
 
     }
 
+    public void saveFavoriteMode(boolean value) {
+        SharedPreferences.Editor editor;
+        editor=mSharedPreferences.edit();
+        editor.putBoolean("isFavoriteMode",value);
+        editor.commit();
+    }
+    public boolean isFavoriteMode(){
+       return  mSharedPreferences.getBoolean("isFavoriteMode",false);
+    }
     public boolean getSharedVariable(){
         boolean temp=false;
         if(mSharedPreferences.contains(FROM_REVIEW_DETAILS)){

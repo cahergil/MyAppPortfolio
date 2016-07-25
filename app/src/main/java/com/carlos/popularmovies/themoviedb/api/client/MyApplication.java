@@ -9,7 +9,16 @@ import android.content.Context;
 public class MyApplication extends Application {
 
     TheMovieDbService mTheMovieDbService;
+    private static Context context;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        this.context=getApplicationContext();
+    }
+    public static Context getContext(){
+        return context;
+    }
     public static MyApplication get(Context context) {
         return (MyApplication) context.getApplicationContext();
     }
