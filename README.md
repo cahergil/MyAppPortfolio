@@ -9,7 +9,8 @@ The purpose of this project was to built an app, optimized for tablets, to help 
 
 ### Features
 
-This app is the first and second project in Udacity's Android Developer Nanodegree. 
+This app is the first and second project in Udacity's Android Developer Nanodegree. To develop this app I used the MVP pattern. [This](http://antonioleiva.com/mvp-android/) blog entry explains briefly what is MVP and why you should use it in your developments. 
+The following is the requirements list of this app in the Android Developer Nanodegree.
 
 1. **Popular Movies Stage 1 requirements:**
   1. Present the user with a grid arrangement of movie posters upon launch.
@@ -34,7 +35,8 @@ This app is the first and second project in Udacity's Android Developer Nanodegr
 - [Android Support Library]()
 - [Picasso](http://square.github.io/picasso/)
 - [CircleImageView] (https://github.com/hdodenhof/CircleImageView)
-- [Retrofit 1.9] (http://square.github.io/retrofit/)
+- [Retrofit 2.0] (http://square.github.io/retrofit/)
+- [Butterknife] (http://jakewharton.github.io/butterknife/)
 
 ### Movies Api
 
