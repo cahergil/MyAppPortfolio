@@ -1,6 +1,8 @@
 package com.carlos.popularmovies.themoviedb.api.client;
 
-import retrofit.RestAdapter;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Carlos on 22/07/2016.
@@ -10,10 +12,11 @@ public class FactoryTheMovieDb {
 
     }
     public static TheMovieDbService create() {
-        RestAdapter restAdapter=new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/")
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("http://api.themoviedb.org/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return restAdapter.create(TheMovieDbService.class);
+        return retrofit.create(TheMovieDbService.class);
     }
 
 }

@@ -13,8 +13,9 @@ import com.carlos.popularmovies.themoviedb.api.model.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
+import retrofit2.Call;
+import retrofit2.Callback;
+
 
 /**
  * Created by Carlos on 22/07/2016.
@@ -29,24 +30,26 @@ public class MoviesInteractor {
     public MoviesInteractor(Context context) {
         this.myApplication = MyApplication.get(context);
         mTheMovieDbService = myApplication.getmTheMovieDbService();
-        this.context=context;
+        this.context = context;
     }
 
     public void getMoviesByPopularity(MoviesCallback callback) {
-        mTheMovieDbService.getMoviesByPopularityDesc(Constants.API_KEY, retrofitCallback(callback));
+        Call call= mTheMovieDbService.getMoviesByPopularityDesc(Constants.API_KEY);
+        call.enqueue(retrofitCallback(callback));
     }
 
     public void getMoviesByRate(MoviesCallback callback) {
-        mTheMovieDbService.getMoviesByAverageRate(Constants.API_KEY, retrofitCallback(callback));
+        Call call=mTheMovieDbService.getMoviesByAverageRate(Constants.API_KEY);
+        call.enqueue(retrofitCallback(callback));
     }
 
-    public void getFavoriteMovies(MoviesCallback callback){
+    public void getFavoriteMovies(MoviesCallback callback) {
         List<MovieDetail> tempListDetail;
-        ArrayList<Response.Movie> tempList=new ArrayList<Response.Movie>();
-        SharedPreferenceManager sharedPreferenceManager=new SharedPreferenceManager(context);
+        ArrayList<Response.Movie> tempList = new ArrayList<Response.Movie>();
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(context);
         tempListDetail = sharedPreferenceManager.getFavoritesList();
         Response.Movie tempMovie;
-        if (tempListDetail!=null) {
+        if (tempListDetail != null) {
             for (MovieDetail movieDetail : tempListDetail) {
                 tempMovie = new Response.Movie();
                 tempMovie.setId(movieDetail.getId());
@@ -64,27 +67,29 @@ public class MoviesInteractor {
     public Callback retrofitCallback(final MoviesCallback callback) {
         return new Callback() {
             @Override
-            public void success(Object o, retrofit.client.Response response) {
-                if (o instanceof Response) {
-                    Response resp = (Response) o;
-                    List<Response.Movie> moviesList = resp.getResults();
-                    callback.onResponse(moviesList);
+            public void onResponse(Call call, retrofit2.Response response) {
+                if (response.isSuccessful()) {
+                    Object o = response.body();
+                    if (o instanceof Response) {
+                        Response resp = (Response) o;
+                        List<Response.Movie> moviesList = resp.getResults();
+                        callback.onResponse(moviesList);
+                    }
+                } else {
+                    String err =""+ response.code();
+                    Log.d(LOG_TAG, "error:" + err);
+                    callback.onServerError(err);
                 }
-
             }
+
 
             @Override
-            public void failure(RetrofitError error) {
-                String err = error.getMessage();
+            public void onFailure(Call call, Throwable t) {
+                String err = t.getMessage();
                 Log.d(LOG_TAG, "error:" + err);
                 callback.onServerError(err);
-
             }
-
-
         };
-
-
     }
 
 
