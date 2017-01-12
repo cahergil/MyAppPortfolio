@@ -12,26 +12,26 @@ import java.util.Observable;
  */
 public class ObservableFavorites extends Observable {
 
-    private static List<MovieDetail> favoriteList;
-    static {
-        SharedPreferenceManager spm=new SharedPreferenceManager(MyApplication.getContext());
-        favoriteList=spm.getFavoritesList();
-    }
+//    private static List<MovieDetail> favoriteList;
+//    static {
+//        SharedPreferenceManager spm=new SharedPreferenceManager(MyApplication.getContext());
+//        favoriteList=spm.getFavoritesList();
+//    }
     private static final ObservableFavorites instance=new ObservableFavorites();
 
     public static ObservableFavorites getInstance(){
         return instance;
     }
     public void updateValue(List<MovieDetail> newList){
-        favoriteList=newList;
+
         synchronized (this) {
             setChanged();
-            notifyObservers(favoriteList);
+            notifyObservers(newList);
         }
     }
 
-    public List<MovieDetail> getValue(){
-        return favoriteList;
-    }
+//    public List<MovieDetail> getValue(){
+//        return favoriteList;
+//    }
 
 }
